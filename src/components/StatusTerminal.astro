@@ -24,8 +24,8 @@ const rows = [
 <aside class="terminal glass" aria-label={d.terminalAria} data-terminal data-not-measured={d.notMeasured}>
   <p class="t-title mono-label">{d.terminalTitle}</p>
   <div class="t-body" data-terminal-body>
-    <p class="t-cmd mono-label" data-t-cmd>
-      <span class="t-prompt" aria-hidden="true">$&nbsp;</span>{d.terminalCmd}
+    <p class="t-cmd mono-label">
+      <span class="t-prompt" aria-hidden="true">$&nbsp;</span><span data-t-cmd>{d.terminalCmd}</span>
     </p>
     <ul role="list">
       {
