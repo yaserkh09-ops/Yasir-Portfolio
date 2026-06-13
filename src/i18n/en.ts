@@ -23,7 +23,7 @@ export const en: Dict = {
     homeAria: 'YASIR — home',
   },
   hero: {
-    eyebrow: 'Independent design & web studio',
+    eyebrow: 'Independent web design & development partner',
     h1Lines: ['Design systems.', 'Fast, accessible,', 'reliable.'],
     sub: 'I build Arabic/English websites and brand systems for Saudi organizations — each language written natively, every claim measured.',
     cta: 'Start a project',

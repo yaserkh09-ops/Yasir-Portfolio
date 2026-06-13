@@ -1,9 +1,9 @@
 ---
 /**
  * Static render of the hero field: the brand grid as a dot matrix with a
- * denser horizontal band (the Stroke motif) and a few signal-green points.
- * Always painted first underneath the canvas (zero CLS) and remains the
- * hero for reduced-motion, WebGL failure, and deviceMemory < 4.
+ * few signal-green points. Always painted first underneath the canvas
+ * (zero CLS) and remains the hero for reduced-motion, WebGL failure, and
+ * deviceMemory < 4. (The flowing band now lives in the footer field.)
  */
 const greens = [
   [180, 530],
@@ -28,13 +28,8 @@ const greens = [
     <pattern id="hg" width="16" height="16" patternUnits="userSpaceOnUse">
       <circle cx="2" cy="2" r="1.1" fill="var(--gl-point)" opacity="0.22"></circle>
     </pattern>
-    <pattern id="hb" width="9" height="9" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1.2" fill="var(--gl-point)" opacity="0.45"></circle>
-    </pattern>
   </defs>
   <rect width="1440" height="900" fill="url(#hg)"></rect>
-  <!-- the Stroke band -->
-  <rect x="0" y="495" width="1440" height="72" fill="url(#hb)"></rect>
   {greens.map(([x, y]) => <circle cx={x} cy={y} r="2" fill="var(--gl-accent)" />)}
 </svg>
 

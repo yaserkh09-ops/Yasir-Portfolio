@@ -1,6 +1,7 @@
 ---
 import { dicts, locales, altLocale, type Locale } from '../i18n';
 import ThemeToggle from './ThemeToggle.astro';
+import FooterField from './FooterField.astro';
 
 interface Props {
   locale: Locale;
@@ -12,6 +13,7 @@ const alt = locales[altLocale(locale)];
 ---
 
 <footer class="footer">
+  <FooterField />
   <div class="container">
     <hr class="stroke stroke--line" />
     <div class="footer-grid">
@@ -46,7 +48,18 @@ const alt = locales[altLocale(locale)];
   .footer {
     position: relative;
     z-index: var(--z-content);
-    padding-block: 8px 32px;
+    overflow: hidden; /* clips the flowing band at the footer edges */
+    min-block-size: 220px;
+    padding-block: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* content sits at the base; band breathes above */
+  }
+
+  /* footer content rides above the field */
+  .footer > .container {
+    position: relative;
+    z-index: 1;
   }
 
   .footer-grid {
