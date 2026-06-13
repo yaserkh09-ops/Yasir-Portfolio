@@ -1,0 +1,59 @@
+---
+/**
+ * Styled placeholder art for a work card: the brand grid, a ghost index
+ * numeral, the client name as a mono chip and one green Stroke. Replace
+ * with real capture imagery as cases are published (Stage 5 material).
+ */
+interface Props {
+  index: number;
+  client: string;
+}
+
+const { index, client } = Astro.props;
+const n = String(index + 1).padStart(2, '0');
+// vary the band position per card so placeholders don't read as clones
+const bandY = [430, 150, 300, 510][index % 4];
+---
+
+<svg
+  class="card-art"
+  viewBox="0 0 800 600"
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <pattern id={`cg-${index}`} width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.1" fill="var(--c-text)" opacity="0.18"></circle>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="var(--c-card)"></rect>
+  <rect width="800" height="600" fill={`url(#cg-${index})`}></rect>
+  <text
+    x="48"
+    y="500"
+    font-family="IBM Plex Mono, monospace"
+    font-weight="500"
+    font-size="320"
+    fill="none"
+    stroke="var(--c-text)"
+    stroke-width="1.5"
+    opacity="0.28">{n}</text>
+  <rect x="48" y={bandY} width="120" height="4" fill="var(--c-accent)"></rect>
+  <text
+    x="48"
+    y="84"
+    font-family="IBM Plex Mono, monospace"
+    font-weight="500"
+    font-size="22"
+    letter-spacing="2"
+    fill="var(--c-text)"
+    opacity="0.75">{client.toUpperCase()}</text>
+</svg>
+
+<style>
+  .card-art {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+</style>

@@ -1,0 +1,130 @@
+---
+import { dicts, locales, altLocale, type Locale } from '../i18n';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = dicts[locale];
+const info = locales[locale];
+const alt = locales[altLocale(locale)];
+
+const links = [
+  { href: '#work', label: dict.nav.work },
+  { href: '#process', label: dict.nav.process },
+  { href: '#contact', label: dict.nav.contact },
+];
+---
+
+<header class="nav-wrap">
+  <nav class="nav glass" aria-label={locale === 'ar' ? 'الرئيسية' : 'Primary'}>
+    <a class="wordmark nav-mark" href={info.htmlPath} aria-label={dict.nav.homeAria}>
+      {info.wordmark}
+    </a>
+
+    <ul class="nav-links" role="list">
+      {
+        links.map(({ href, label }) => (
+          <li>
+            <a class="nav-link" href={href}>
+              {label}
+              <span class="nav-link-stroke" aria-hidden="true"></span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="nav-end">
+      <a
+        class="nav-link nav-locale mono-label"
+        href={alt.htmlPath}
+        lang={alt.lang}
+        dir={alt.dir}
+        aria-label={dict.nav.localeSwitchAria}
+      >
+        {dict.nav.localeSwitch}
+      </a>
+      <ThemeToggle locale={locale} />
+    </div>
+  </nav>
+</header>
+
+<style>
+  .nav-wrap {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: var(--z-nav);
+    padding: 12px var(--gutter) 0;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    max-inline-size: var(--content-max);
+    margin-inline: auto;
+    padding-inline: clamp(16px, 2vw, 28px);
+    min-block-size: 56px;
+    /* Text on glass: full ink/paper only — see tokens.css contrast log */
+    color: var(--c-text);
+  }
+
+  .nav-mark {
+    font-size: 1.0625rem;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--target-min);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: clamp(8px, 2vw, 24px);
+  }
+
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--target-min);
+    padding-inline: 8px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  /* Active/hover state = the Stroke (§4), green, non-text */
+  .nav-link-stroke {
+    position: absolute;
+    inset-block-end: 8px;
+    inset-inline: 8px;
+    block-size: var(--stroke-w);
+    background: var(--c-accent);
+    transform: scaleX(0);
+    transform-origin: var(--origin-start);
+    transition: transform var(--t-med) var(--ease);
+  }
+  .nav-link:hover .nav-link-stroke,
+  .nav-link:focus-visible .nav-link-stroke {
+    transform: scaleX(1);
+  }
+
+  .nav-end {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-locale {
+    text-transform: none;
+  }
+
+  @media (max-width: 767px) {
+    .nav-links {
+      display: none; /* anchors only — all content remains reachable by scroll */
+    }
+  }
+</style>

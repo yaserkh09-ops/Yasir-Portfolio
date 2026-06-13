@@ -1,0 +1,92 @@
+---
+import { dicts, locales, altLocale, type Locale } from '../i18n';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = dicts[locale];
+const alt = locales[altLocale(locale)];
+---
+
+<footer class="footer">
+  <div class="container">
+    <hr class="stroke stroke--line" />
+    <div class="footer-grid">
+      <!-- §1.5 — always live text, bilingual lockup is the single permitted
+           side-by-side appearance of the two marks -->
+      <p class="credit">
+        <span lang="en" dir="ltr">Designed by YASIR_</span>
+        <span aria-hidden="true"> · </span>
+        <span class="credit-ar" lang="ar" dir="rtl">تصميم ياسر</span>
+      </p>
+
+      <p class="footer-note caption">{dict.footer.a11yNote}</p>
+
+      <div class="footer-controls">
+        <a
+          class="footer-locale ui-label"
+          href={alt.htmlPath}
+          lang={alt.lang}
+          dir={alt.dir}
+          aria-label={dict.nav.localeSwitchAria}
+        >
+          {dict.nav.localeSwitch}
+        </a>
+        <ThemeToggle locale={locale} />
+      </div>
+    </div>
+    <p class="footer-rights caption">{dict.footer.rights}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    z-index: var(--z-content);
+    padding-block: 8px 32px;
+  }
+
+  .footer-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+    padding-block: 24px 8px;
+  }
+
+  /* IBM Plex Mono Medium 12/16, +6% tracking, stone — guideline §1.5 */
+  .credit {
+    font-family: var(--font-mono);
+    font-size: var(--fs-credit);
+    line-height: 1.333;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--c-text-3);
+  }
+  .credit-ar {
+    font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+    letter-spacing: 0; /* never letter-space Arabic */
+  }
+
+  .footer-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-locale {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--target-min);
+    padding-inline: 8px;
+    text-transform: none;
+  }
+
+  .footer-rights {
+    padding-block-start: 8px;
+  }
+</style>

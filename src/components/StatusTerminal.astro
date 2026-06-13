@@ -1,0 +1,133 @@
+---
+import { dicts, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const d = dicts[locale].hero;
+
+/**
+ * Rows map to /public/metrics.json (committed from Lighthouse CI — see the
+ * TODO note in that file). Server-rendered values are honest em-dashes;
+ * scripts/terminal.ts fills real values only when they exist. Targets live
+ * in terminal.ts: performance >= 95, accessibility = 100, LCP <= 2500ms.
+ */
+const rows = [
+  { key: 'PERFORMANCE', metric: 'performance' },
+  { key: 'ACCESSIBILITY', metric: 'accessibility' },
+  { key: 'LCP', metric: 'lcp' },
+];
+---
+
+<aside class="terminal glass" aria-label={d.terminalAria} data-terminal data-not-measured={d.notMeasured}>
+  <p class="t-title mono-label">{d.terminalTitle}</p>
+  <div class="t-body" data-terminal-body>
+    <p class="t-cmd mono-label" data-t-cmd>
+      <span class="t-prompt" aria-hidden="true">$&nbsp;</span>{d.terminalCmd}
+    </p>
+    <ul role="list">
+      {
+        rows.map((r) => (
+          <li class="t-row mono-label" data-t-row>
+            <span class="t-key" data-t-key>{r.key}</span>
+            <span class="t-leader" aria-hidden="true" />
+            <span class="t-val ltr-island" data-t-val={r.metric}>
+              —
+            </span>
+            <span class="t-dot" data-t-dot hidden aria-hidden="true" />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <p class="t-note ui-label">{d.metricsNote}</p>
+  <p class="sr-only" data-terminal-sr aria-live="polite"></p>
+</aside>
+
+<style>
+  .terminal {
+    /* Text on glass is always full ink/paper — tokens.css contrast log */
+    color: var(--c-text);
+    padding: 20px 24px;
+    inline-size: min(100%, 430px);
+    display: grid;
+    gap: 14px;
+  }
+
+  .t-title {
+    color: inherit;
+    padding-block-end: 10px;
+    border-block-end: var(--hairline) solid color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  .t-body {
+    display: grid;
+    gap: 8px;
+    min-block-size: 7.2em; /* rows reserved — typing can't shift layout */
+  }
+
+  .t-cmd {
+    color: inherit;
+  }
+
+  .t-prompt {
+    color: var(--c-accent);
+  }
+
+  .t-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    color: inherit;
+  }
+
+  .t-leader {
+    flex: 1;
+    border-block-end: var(--hairline) dashed color-mix(in srgb, currentColor 25%, transparent);
+    translate: 0 -4px;
+  }
+
+  .t-val {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* pass-dot: green, non-text (3.11:1 / 3.23:1 vs worst-case glass — OK) */
+  .t-dot {
+    inline-size: 8px;
+    block-size: 8px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    align-self: center;
+  }
+  .t-dot.is-pass {
+    animation: dot-spring 500ms var(--ease) both;
+  }
+  @keyframes dot-spring {
+    0% {
+      transform: scale(0);
+    }
+    60% {
+      transform: scale(1.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .t-note {
+    color: inherit; /* full ink/paper — stone fails on glass */
+    opacity: 1;
+    font-weight: 500;
+  }
+
+  /* typing caret, added by terminal.ts during the typed phase */
+  :global(.t-caret) {
+    display: inline-block;
+    inline-size: 0.55em;
+    block-size: 1em;
+    translate: 2px 2px;
+    background: var(--c-accent);
+  }
+</style>

@@ -110,6 +110,23 @@ i {
   color: var(--c-text-3);
 }
 
+/* Locale-aware UI label: mono treatment in EN, Plex Sans Arabic sibling
+   treatment in AR (Plex Mono has no Arabic; Arabic is never letter-spaced) */
+.ui-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}
+:root[lang='ar'] .ui-label {
+  font-family: var(--font-sans);
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 600;
+}
+
 /* Numbers/codes remain LTR islands inside RTL text (§3.4.1) */
 .ltr-island {
   direction: ltr;
@@ -192,6 +209,24 @@ main {
   text-decoration-color: var(--c-accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
+}
+
+/* ---------- wordmark (§1) — pure type, zero glyph surgery ---------- */
+.wordmark {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: var(--track-wordmark); /* +16% */
+  text-transform: uppercase;
+  color: var(--c-text); /* never green (§2.4.4) */
+  white-space: nowrap;
+}
+:root[lang='ar'] .wordmark {
+  font-family: var(--font-sans); /* Plex Sans Arabic */
+  font-weight: 700;
+  letter-spacing: 0; /* never letter-space connected Arabic (§1.2) */
+  text-transform: none;
+  /* AR mark sits ~8% larger than Latin cap-height for optical parity (§1.2) */
+  font-size: 1.08em;
 }
 
 /* ---------- glass (scope: nav, terminal, hero CTA card, modals) ---------- */

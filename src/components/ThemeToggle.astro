@@ -1,0 +1,52 @@
+---
+import { dicts, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = dicts[locale];
+---
+
+<button
+  type="button"
+  class="theme-toggle"
+  data-theme-toggle
+  data-label-dark={dict.nav.themeToDark}
+  data-label-light={dict.nav.themeToLight}
+  aria-label={dict.nav.themeToDark}
+>
+  <!-- mode dot: outline = light, filled = dark; no icon vocabulary beyond this -->
+  <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+    <circle class="tt-ring" cx="9" cy="9" r="7" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+    <circle class="tt-fill" cx="9" cy="9" r="4" fill="currentColor"></circle>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--target-min);
+    block-size: var(--target-min);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .tt-fill {
+    transform-origin: center;
+    transition: transform var(--t-med) var(--ease);
+  }
+  :root[data-theme='dark'] .tt-fill {
+    transform: scale(0.45);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) .tt-fill {
+      transform: scale(0.45);
+    }
+  }
+</style>

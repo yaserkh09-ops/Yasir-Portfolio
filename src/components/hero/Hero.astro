@@ -1,0 +1,137 @@
+---
+import { dicts, type Locale } from '../../i18n';
+import HeroFallback from './HeroFallback.astro';
+import StatusTerminal from '../StatusTerminal.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const d = dicts[locale].hero;
+---
+
+<section class="hero">
+  <div class="hero-field" data-hero-field aria-hidden="true">
+    <HeroFallback />
+    <!-- OGL canvas mounts here, imported after first paint (scripts/hero.ts) -->
+  </div>
+
+  <div class="hero-inner container">
+    <div class="hero-copy">
+      <p class="hero-eyebrow mono-label">{d.eyebrow}</p>
+      <h1 class="hero-h1 h1">
+        {
+          d.h1Lines.map((line) => (
+            <span class="h1-line" data-h1-line>
+              <span class="h1-line-inner">{line}</span>
+            </span>
+          ))
+        }
+      </h1>
+      <p class="hero-sub body-l">{d.sub}</p>
+
+      <div class="hero-cta glass">
+        <a class="btn" href="#contact" data-magnetic>{d.cta}</a>
+        <p class="hero-cta-note ui-label">{d.ctaNote}</p>
+      </div>
+    </div>
+
+    <div class="hero-terminal">
+      <StatusTerminal locale={locale} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-block-size: 100svh;
+    display: grid;
+    overflow: hidden;
+  }
+
+  .hero-field {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-canvas);
+  }
+
+  /* canvas fades in once the GL field is warm; fallback stays underneath */
+  .hero-field :global(canvas) {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    opacity: 0;
+    transition: opacity 600ms var(--ease);
+  }
+  .hero-field :global(canvas.is-on) {
+    opacity: 1;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: var(--z-content);
+    display: grid;
+    gap: clamp(40px, 6vh, 72px);
+    align-content: end;
+    padding-block: 128px clamp(32px, 6vh, 64px);
+  }
+
+  @media (min-width: 1024px) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: end;
+    }
+  }
+
+  .hero-copy {
+    display: grid;
+    gap: clamp(20px, 3vh, 32px);
+    justify-items: start;
+  }
+
+  .hero-eyebrow {
+    color: var(--c-text-2);
+  }
+
+  .h1-line {
+    display: block;
+    /* JS sets the animated clip; default is fully visible (no-JS / PRM) */
+  }
+  .h1-line-inner {
+    display: inline-block;
+  }
+
+  .hero-sub {
+    max-inline-size: 36ch;
+    color: var(--c-text-2);
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px;
+    color: var(--c-text); /* glass text rule */
+  }
+
+  .hero-cta-note {
+    padding-inline-end: 10px;
+  }
+
+  .hero-terminal {
+    justify-self: end;
+    align-self: end;
+    inline-size: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 1023px) {
+    .hero-terminal {
+      justify-content: stretch;
+    }
+  }
+</style>
