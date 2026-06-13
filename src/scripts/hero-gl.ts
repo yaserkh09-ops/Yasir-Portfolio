@@ -145,29 +145,36 @@ const buildGeometry = (gl: WebGLRenderingContext, w: number, h: number) => {
     Math.ceil(w / g) * Math.ceil(h / g) + Math.ceil(w / BAND_GAP) * BAND_ROWS;
   while (estimate(gap) > MAX_POINTS) gap += 1;
 
-  const pts: number[] = [];
-  const data: number[] = [];
+  // preallocated typed arrays — keeps the (idle-time) build off long-task lists
+  const total = estimate(gap);
+  const pts = new Float32Array(total * 2);
+  const data = new Float32Array(total * 3);
+  let n = 0;
 
   const push = (x: number, y: number, band: number) => {
-    pts.push(x, y);
-    data.push(Math.random(), Math.random() < GREEN_RATIO ? 1 : 0, band);
+    pts[n * 2] = x;
+    pts[n * 2 + 1] = y;
+    data[n * 3] = Math.random();
+    data[n * 3 + 1] = Math.random() < GREEN_RATIO ? 1 : 0;
+    data[n * 3 + 2] = band;
+    n += 1;
   };
 
   // the brand grid
   for (let x = gap / 2; x < w; x += gap)
-    for (let y = gap / 2; y < h; y += gap) push(x, y, 0);
+    for (let y = gap / 2; y < h && n < total; y += gap) push(x, y, 0);
 
   // the Stroke band — denser rows around 58% height, gaussian-ish spread
   const bandY = h * 0.58;
   for (let r = 0; r < BAND_ROWS; r += 1) {
     const off = (r / (BAND_ROWS - 1) - 0.5) * 2; // -1..1
     const y = bandY + off * 34 * (1 - 0.4 * off * off);
-    for (let x = Math.random() * BAND_GAP; x < w; x += BAND_GAP) push(x, y, 1);
+    for (let x = Math.random() * BAND_GAP; x < w && n < total; x += BAND_GAP) push(x, y, 1);
   }
 
   return new Geometry(gl, {
-    position: { size: 2, data: new Float32Array(pts) },
-    aData: { size: 3, data: new Float32Array(data) },
+    position: { size: 2, data: n === total ? pts : pts.subarray(0, n * 2) },
+    aData: { size: 3, data: n === total ? data : data.subarray(0, n * 3) },
   });
 };
 

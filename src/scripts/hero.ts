@@ -18,7 +18,12 @@ export const initHeroGL = () => {
   const probe = document.createElement('canvas');
   const gl = probe.getContext('webgl2') ?? probe.getContext('webgl');
   if (!gl) return;
+  // software rasterizers (SwiftShader/llvmpipe) burn the main thread on a
+  // 30k-point field — those users get the static SVG by design
+  const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+  const renderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
   gl.getExtension('WEBGL_lose_context')?.loseContext();
+  if (/swiftshader|llvmpipe|software/i.test(renderer)) return;
 
   const load = () => {
     import('./hero-gl')

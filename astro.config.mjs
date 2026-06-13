@@ -7,8 +7,8 @@ export default defineConfig({
   site: 'https://yasir-portfolio.example',
   trailingSlash: 'always',
   build: {
-    // Inline small stylesheets to avoid a render-blocking request chain.
-    inlineStylesheets: 'auto',
+    // Inline all CSS: one less render-blocking request, faster FCP/LCP.
+    inlineStylesheets: 'always',
   },
   i18n: {
     locales: ['en', 'ar'],
