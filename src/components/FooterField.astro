@@ -1,0 +1,52 @@
+---
+/**
+ * Footer field — the flowing band of dots relocated from the hero. The
+ * static SVG band paints first (zero CLS); footer-gl.ts fades a live
+ * canvas over it when motion is allowed and a hardware GL context exists.
+ * Reduced-motion / WebGL-fail / low-memory keep the static band.
+ */
+---
+
+<div class="footer-field" data-footer-field aria-hidden="true">
+  <svg
+    class="footer-fallback"
+    viewBox="0 0 1440 240"
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <defs>
+      <pattern id="ffb" width="9" height="9" patternUnits="userSpaceOnUse">
+        <circle cx="2" cy="2" r="1.2" fill="var(--gl-point)" opacity="0.4"></circle>
+      </pattern>
+    </defs>
+    <!-- upper-third band, matching footer-gl's cy=0.34 so the credit stays clear -->
+    <rect x="0" y="38" width="1440" height="72" fill="url(#ffb)"></rect>
+  </svg>
+</div>
+
+<style>
+  .footer-field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .footer-fallback {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .footer-field :global(canvas) {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    opacity: 0;
+    transition: opacity 600ms var(--ease);
+  }
+  .footer-field :global(canvas.is-on) {
+    opacity: 1;
+  }
+</style>

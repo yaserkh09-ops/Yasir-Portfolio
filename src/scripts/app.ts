@@ -4,6 +4,7 @@ import { initProgress } from './progress';
 import { initCursor } from './cursor';
 import { initTerminal } from './terminal';
 import { initHeroGL } from './hero';
+import { initFooterGL } from './footer';
 import { runPreloader } from './preloader';
 
 /**
@@ -31,6 +32,7 @@ const start = async () => {
   initTerminal();
   initCursor();
   initHeroGL();
+  initFooterGL();
 
   // user flips the OS setting mid-session → degrade to the static page
   prm.addEventListener('change', (e) => {

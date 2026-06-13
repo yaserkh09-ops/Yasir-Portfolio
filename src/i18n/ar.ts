@@ -23,7 +23,7 @@ export const ar: Dict = {
     homeAria: 'ياسر — الصفحة الرئيسية',
   },
   hero: {
-    eyebrow: 'Independent design & web studio',
+    eyebrow: 'Independent web design & development partner',
     h1Lines: ['أنظمة تصميم.', 'سريعة، مُيسّرة الوصول،', 'يمكن الاعتماد عليها.'],
     sub: 'أبني مواقع وأنظمة هوية بالعربية والإنجليزية للمؤسسات في السعودية — كل لغة تُكتب لقارئها، وكل ادعاء يُقاس.',
     cta: 'ابدأ مشروعًا',

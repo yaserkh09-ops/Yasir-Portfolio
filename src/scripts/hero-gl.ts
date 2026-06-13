@@ -1,10 +1,11 @@
 import { Renderer, Geometry, Program, Mesh } from 'ogl';
-import { dirSign } from './env';
 
 /**
- * The hero field: ~20–34k points on the brand grid, displaced by 2D curl
- * noise, with a denser horizontal band flowing through — the Stroke motif
- * in 3D. Flow reverses on /ar/. Cursor proximity repels (lerped, springy).
+ * The hero field: ~20k points on the brand grid, gently displaced by 2D
+ * curl noise. Cursor proximity repels (lerped, springy). The ~4% signal
+ * green points carry a subtle centred-gravity motion and act as gravity
+ * wells that "boil" the nearby ink/paper points a little. (The flowing
+ * band motif now lives in the footer field — see footer-gl.ts.)
  *
  * Budgets and gates (gating itself lives in hero.ts):
  *  - DPR capped at 1.75
@@ -14,12 +15,11 @@ import { dirSign } from './env';
  */
 
 const GRID_GAP = 8; // css px between grid points
-const BAND_GAP = 6;
-const BAND_ROWS = 12;
 const MAX_POINTS = 40000;
 const GREEN_RATIO = 0.04;
 const REPEL_RADIUS = 150;
 const REPEL_PUSH = 34;
+const WELLS = 10; // moving green gravity wells that boil the field
 
 // Ashima 3D simplex noise; curl is taken in 2D via finite differences.
 const NOISE = /* glsl */ `
@@ -71,36 +71,56 @@ float snoise(vec3 v){
 }`;
 
 const VERTEX = /* glsl */ `
+#define WELLS ${WELLS}
 attribute vec2 position;
-attribute vec3 aData; // x: rand seed, y: isGreen, z: isBand
+attribute vec2 aData; // x: rand seed, y: isGreen
 uniform vec2 uRes;
 uniform float uTime;
 uniform vec2 uMouse;
 uniform float uMouseStrength;
-uniform float uDir;
 uniform float uDpr;
+uniform vec2 uCenter;
+uniform vec2 uWells[WELLS];
 varying float vGreen;
 varying float vAlpha;
 ${NOISE}
 void main() {
   vec2 pos = position;
+  float seed = aData.x;
+  float green = aData.y;
 
-  // the band flows along the inline axis; wraps at the edges
-  if (aData.z > 0.5) {
-    pos.x = mod(pos.x + uTime * 42.0 * uDir, uRes.x + 40.0) - 20.0;
-  }
-
-  // 2D curl of a scalar simplex field (divergence-free drift)
+  // 2D curl of a scalar simplex field — the field's resting breath
   float s = 1.0 / 170.0;
   float t = uTime * 0.07;
   float e = 6.0;
-  float n  = snoise(vec3(pos * s, t + aData.x * 0.3));
-  float nx = snoise(vec3((pos + vec2(e, 0.0)) * s, t + aData.x * 0.3));
-  float ny = snoise(vec3((pos + vec2(0.0, e)) * s, t + aData.x * 0.3));
+  float n  = snoise(vec3(pos * s, t + seed * 0.3));
+  float nx = snoise(vec3((pos + vec2(e, 0.0)) * s, t + seed * 0.3));
+  float ny = snoise(vec3((pos + vec2(0.0, e)) * s, t + seed * 0.3));
   vec2 curl = vec2(ny - n, -(nx - n)) / e;
-  pos += curl * (aData.z > 0.5 ? 26.0 : 15.0);
+  pos += curl * 15.0;
 
-  // springy cursor repulsion
+  if (green > 0.5) {
+    // green: subtle centred gravity — breathe toward centre + slow orbit
+    vec2 toC = uCenter - pos;
+    float dC = max(length(toC), 1.0);
+    float breath = 0.5 + 0.5 * sin(uTime * 0.5 + seed * 6.2831);
+    pos += (toC / dC) * 7.0 * breath;
+    vec2 tang = vec2(-toC.y, toC.x) / dC;
+    pos += tang * 5.0 * sin(uTime * 0.35 + seed * 6.2831);
+  } else {
+    // ink/paper: boil a little where the green gravity wells pass through
+    vec2 boil = vec2(0.0);
+    for (int i = 0; i < WELLS; i++) {
+      vec2 dw = pos - uWells[i];
+      float dist = length(dw);
+      float infl = smoothstep(130.0, 0.0, dist);
+      float ph = uTime * 2.0 + float(i) * 1.7 + seed * 6.2831;
+      boil += (dw / max(dist, 1.0)) * infl * sin(ph) * 4.0;
+    }
+    pos += boil;
+  }
+
+  // springy cursor repulsion (the hover animation — kept)
   vec2 d = pos - uMouse;
   float dist = max(length(d), 0.001);
   float f = smoothstep(${REPEL_RADIUS}.0, 0.0, dist);
@@ -109,11 +129,11 @@ void main() {
   vec2 clip = (pos / uRes) * 2.0 - 1.0;
   gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
 
-  float size = (aData.z > 0.5 ? 2.3 : 1.6) * (0.75 + aData.x * 0.5);
+  float size = 1.6 * (0.75 + seed * 0.5);
   gl_PointSize = size * uDpr;
 
-  vGreen = aData.y;
-  vAlpha = (aData.z > 0.5 ? 0.55 : 0.3) + aData.x * 0.15 + f * 0.25;
+  vGreen = green;
+  vAlpha = 0.3 + seed * 0.15 + f * 0.25;
 }`;
 
 const FRAGMENT = /* glsl */ `
@@ -141,40 +161,30 @@ const cssColor = (name: string): [number, number, number] => {
 
 const buildGeometry = (gl: WebGLRenderingContext, w: number, h: number) => {
   let gap = GRID_GAP;
-  const estimate = (g: number) =>
-    Math.ceil(w / g) * Math.ceil(h / g) + Math.ceil(w / BAND_GAP) * BAND_ROWS;
+  const estimate = (g: number) => Math.ceil(w / g) * Math.ceil(h / g);
   while (estimate(gap) > MAX_POINTS) gap += 1;
 
   // preallocated typed arrays — keeps the (idle-time) build off long-task lists
   const total = estimate(gap);
   const pts = new Float32Array(total * 2);
-  const data = new Float32Array(total * 3);
+  const data = new Float32Array(total * 2);
   let n = 0;
 
-  const push = (x: number, y: number, band: number) => {
+  const push = (x: number, y: number) => {
     pts[n * 2] = x;
     pts[n * 2 + 1] = y;
-    data[n * 3] = Math.random();
-    data[n * 3 + 1] = Math.random() < GREEN_RATIO ? 1 : 0;
-    data[n * 3 + 2] = band;
+    data[n * 2] = Math.random();
+    data[n * 2 + 1] = Math.random() < GREEN_RATIO ? 1 : 0;
     n += 1;
   };
 
   // the brand grid
   for (let x = gap / 2; x < w; x += gap)
-    for (let y = gap / 2; y < h && n < total; y += gap) push(x, y, 0);
-
-  // the Stroke band — denser rows around 58% height, gaussian-ish spread
-  const bandY = h * 0.58;
-  for (let r = 0; r < BAND_ROWS; r += 1) {
-    const off = (r / (BAND_ROWS - 1) - 0.5) * 2; // -1..1
-    const y = bandY + off * 34 * (1 - 0.4 * off * off);
-    for (let x = Math.random() * BAND_GAP; x < w && n < total; x += BAND_GAP) push(x, y, 1);
-  }
+    for (let y = gap / 2; y < h && n < total; y += gap) push(x, y);
 
   return new Geometry(gl, {
     position: { size: 2, data: n === total ? pts : pts.subarray(0, n * 2) },
-    aData: { size: 3, data: n === total ? data : data.subarray(0, n * 3) },
+    aData: { size: 2, data: n === total ? data : data.subarray(0, n * 2) },
   });
 };
 
@@ -199,12 +209,21 @@ export const mount = (field: HTMLElement) => {
       uTime: { value: 0 },
       uMouse: { value: [-9999, -9999] },
       uMouseStrength: { value: 0 },
-      uDir: { value: dirSign },
       uDpr: { value: Math.min(devicePixelRatio || 1, 1.75) },
+      uCenter: { value: [1, 1] },
+      // plain array (not Float32Array) — OGL only uploads array uniforms
+      // whose value passes Array.isArray()
+      uWells: { value: new Array(WELLS * 2).fill(0) as number[] },
       uPoint: { value: cssColor('--gl-point') },
       uAccent: { value: cssColor('--gl-accent') },
     },
   });
+
+  // centred-gravity wells, animated on the CPU and uploaded each frame
+  const wells = program.uniforms.uWells.value as number[];
+  let cx = 0;
+  let cy = 0;
+  let minDim = 1;
 
   let mesh: Mesh | null = null;
   const rebuild = () => {
@@ -212,6 +231,10 @@ export const mount = (field: HTMLElement) => {
     const h = field.clientHeight;
     renderer.setSize(w, h);
     program.uniforms.uRes.value = [w, h];
+    cx = w / 2;
+    cy = h / 2;
+    minDim = Math.min(w, h);
+    program.uniforms.uCenter.value = [cx, cy];
     mesh = new Mesh(gl, { mode: gl.POINTS, geometry: buildGeometry(gl, w, h), program });
   };
   rebuild();
@@ -244,7 +267,17 @@ export const mount = (field: HTMLElement) => {
   let started = false;
   const frame = (t: number) => {
     if (!running) return;
-    program.uniforms.uTime.value = t / 1000;
+    const tt = t / 1000;
+    program.uniforms.uTime.value = tt;
+
+    // wells drift slowly around the centre — the "centred gravity"
+    for (let i = 0; i < WELLS; i += 1) {
+      const ang = tt * 0.15 + (i * (Math.PI * 2)) / WELLS;
+      const rad = minDim * (0.1 + 0.05 * Math.sin(tt * 0.3 + i));
+      wells[i * 2] = cx + Math.cos(ang) * rad;
+      wells[i * 2 + 1] = cy + Math.sin(ang) * rad * 0.55;
+    }
+
     mouse.x += (mouse.tx - mouse.x) * 0.14;
     mouse.y += (mouse.ty - mouse.y) * 0.14;
     const moving = Math.hypot(mouse.tx - mouse.x, mouse.ty - mouse.y);
