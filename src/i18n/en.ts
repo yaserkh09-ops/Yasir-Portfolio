@@ -24,27 +24,27 @@ export const en: Dict = {
   },
   hero: {
     eyebrow: 'Independent web design & development partner',
-    h1Lines: ['Design systems.', 'Fast, accessible,', 'reliable.'],
-    sub: 'I build Arabic/English websites and brand systems for Saudi organizations — each language written natively, every claim measured.',
-    cta: 'Start a project',
-    ctaNote: 'Replies in English or Arabic',
+    h1Lines: ['In constant motion', 'towards impactful', 'digital presence.'],
+    sub: 'As your partner, you will find me in every step of your journey to have a strong digital presence, from a strong design system to the dream website.',
+    cta: 'Get in Touch',
+    ctaNote: 'Great partnerships start with a conversation',
     terminalAria: 'Live build metrics',
-    terminalTitle: 'yasir@studio — lighthouse',
-    terminalCmd: 'lighthouse --preset=mobile ./',
+    terminalTitle: 'Your trusted partner',
+    terminalCmd: 'Standards I never negotiate',
     notMeasured: 'not yet measured',
-    metricsNote: 'Published when measured — never claimed.',
+    metricsNote: 'Let’s get 8 billion people to see you!',
   },
   ticker: [
     'Two languages, each written natively',
-    'Brand systems with governance',
-    'Lighthouse 100 · WCAG 2.1 AA · technical SEO',
     'The right platform, per client',
-    'Your team runs it after handoff',
+    'Brand systems for consistency',
+    'Fast, accessible, and reliable',
+    'The digital world is waiting for you',
   ],
   work: {
     label: '01 — Selected work',
     heading: 'Selected work.',
-    line: 'Outcomes over deliverables — each case records what changed.',
+    line: 'Outcomes over deliverables — each case gets tailored solutions.',
     cardCta: 'View case',
     cards: [
       {
@@ -75,7 +75,7 @@ export const en: Dict = {
   },
   system: {
     label: '02 — Process',
-    heading: 'One process, four gates.',
+    heading: 'One process, four phases.',
     steps: [
       {
         label: '01 Discover',
@@ -87,16 +87,16 @@ export const en: Dict = {
       },
       {
         label: '03 Engineer',
-        copy: 'Built to numbers — Lighthouse, WCAG 2.1 AA, Core Web Vitals — measured on every release.',
+        copy: 'Crafting to magic — based on powerful platforms like Webflow or even custom code to release what satisfies your needs.',
       },
       {
         label: '04 Handoff',
-        copy: 'Documentation and training until your team runs it without me.',
+        copy: 'Documentation and training until you are comfortable. From here — long-term partnership just began!',
       },
     ],
   },
   proof: {
-    line: 'Numbers are claims. These are measured.',
+    line: 'Numbers never lie.',
     metrics: [
       {
         value: 17.48,
@@ -119,10 +119,10 @@ export const en: Dict = {
     ],
   },
   cta: {
-    label: '03 — Contact',
+    label: 'CONTACT ME',
     heading: 'Tell me what needs to work.',
     line: 'One reply, usually within a day — in English or Arabic, whichever you prefer.',
-    button: 'Start a project',
+    button: 'Get in Touch',
     emailLabel: 'Or write directly:',
   },
   footer: {
