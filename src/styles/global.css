@@ -1,0 +1,304 @@
+@import './tokens.css';
+@import './fonts.css';
+
+/* ---------- reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scrollbar-gutter: stable;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  min-block-size: 100svh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-inline-size: 100%;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+/* Arabic body: right-aligned ragged, NEVER justified, no letter-spacing (§3.4.3) */
+:root[lang='ar'] body {
+  text-align: start;
+  letter-spacing: 0;
+}
+:root[lang='ar'] p {
+  text-align: start; /* ragged — justification stretches spaces, not kashidas */
+}
+
+/* italic does not exist in this system; emphasis = weight or green (§3.4.4) */
+em,
+i {
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* ---------- typography helpers ---------- */
+.h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  font-weight: var(--fw-h1);
+  letter-spacing: var(--track-h1);
+}
+
+.h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  font-weight: var(--fw-h2);
+}
+
+.h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+  font-weight: 500;
+}
+
+.body-l {
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+}
+
+/* Mono labels stay Latin in both trees (§3.3 note + §3.4.2) */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.caption {
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  color: var(--c-text-3);
+}
+
+/* Numbers/codes remain LTR islands inside RTL text (§3.4.1) */
+.ltr-island {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+
+/* ---------- layout ---------- */
+.container {
+  inline-size: 100%;
+  max-inline-size: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+main {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+/* ---------- a11y ---------- */
+.sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  inset-block-start: 8px;
+  inset-inline-start: 8px;
+  z-index: calc(var(--z-preloader) + 1);
+  padding: 12px 20px;
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  border-radius: var(--radius);
+  transform: translateY(calc(-100% - 16px));
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+/* ---------- the Stroke (§4) — entire decorative vocabulary ---------- */
+.stroke {
+  display: block;
+  block-size: var(--stroke-w);
+  background: currentColor;
+  border: 0;
+}
+.stroke--line {
+  background: var(--c-line);
+  block-size: var(--hairline);
+}
+.stroke--accent {
+  background: var(--c-accent);
+}
+
+/* Link underline: green, 1px, offset 4px (§4) */
+.link {
+  text-decoration: underline;
+  text-decoration-color: var(--c-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+/* ---------- glass (scope: nav, terminal, hero CTA card, modals) ---------- */
+.glass {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-panel);
+}
+@supports (backdrop-filter: blur(1px)) {
+  .glass {
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+  }
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .glass {
+    background: var(--c-bg); /* solid token fallback */
+  }
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-block-size: var(--target-min);
+  padding: 12px 28px;
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--t-fast) var(--ease);
+}
+:root[lang='ar'] .btn {
+  font-family: var(--font-sans); /* Plex Mono has no Arabic — sibling treatment */
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 600;
+}
+/* Stroke underline sweep on hover */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 6px;
+  inset-inline: 28px;
+  block-size: var(--hairline);
+  background: var(--c-on-accent);
+  transform: scaleX(0);
+  transform-origin: var(--origin-start, left);
+  transition: transform var(--t-med) var(--ease);
+}
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: scaleX(1);
+}
+:root[dir='rtl'] {
+  --origin-start: right;
+  --origin-end: left;
+}
+:root[dir='ltr'] {
+  --origin-start: left;
+  --origin-end: right;
+}
+
+/* ---------- view transitions ---------- */
+/* Theme switch: radial wipe driven from the toggle (scripts/theme.ts).
+   Default snapshot animations off so the wipe is the only motion. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* Locale switch: cross-document transition (same-origin MPA) */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* ---------- reduced motion: global kill-switch ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
