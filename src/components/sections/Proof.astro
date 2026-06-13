@@ -1,0 +1,88 @@
+---
+import { dicts, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const p = dicts[locale].proof;
+
+const format = (value: number, decimals: number) => value.toFixed(decimals);
+---
+
+<!-- Full-width band in the inverse of the current mode. Values are
+     server-rendered final (no-JS/SEO sees real numbers); motion JS
+     counts them up once on first viewport entry. -->
+<section class="proof" data-proof>
+  <div class="container">
+    <p class="proof-line h3">{p.line}</p>
+    <dl class="proof-grid">
+      {
+        p.metrics.map((m) => (
+          <div class="proof-item">
+            <dd class="proof-value">
+              <span
+                class="ltr-island"
+                data-count={m.value}
+                data-decimals={m.decimals}
+                data-suffix={m.suffix}
+              >
+                {format(m.value, m.decimals)}{m.suffix}
+              </span>
+            </dd>
+            <dt class="proof-label">{m.label}</dt>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .proof {
+    background: var(--c-bg-inverse);
+    color: var(--c-text-inverse);
+    padding-block: clamp(72px, 10vh, 120px);
+  }
+
+  .proof-line {
+    max-inline-size: 40ch;
+    margin-block-end: clamp(40px, 6vh, 64px);
+  }
+
+  .proof-grid {
+    display: grid;
+    gap: 40px 24px;
+  }
+  @media (min-width: 768px) {
+    .proof-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .proof-item {
+    display: grid;
+    gap: 12px;
+    padding-block-start: 20px;
+    border-block-start: var(--hairline) solid var(--c-line-inverse);
+  }
+
+  /* dd before dt visually: value leads, claim follows */
+  .proof-value {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: clamp(2.5rem, 4.5vw, 3.75rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--c-accent-inverse);
+  }
+
+  .proof-label {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--c-text-2-inverse);
+    max-inline-size: 32ch;
+  }
+</style>

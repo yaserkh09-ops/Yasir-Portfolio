@@ -1,0 +1,59 @@
+---
+/**
+ * First-visit preloader. Visibility decided pre-paint by the inline script
+ * in Base.astro (html[data-preload]); reduced-motion and repeat visits never
+ * see it. Counter syncs to real loading in scripts/preloader.ts, hard cap
+ * 1.2s. The bail animation below guarantees it clears even if JS dies.
+ */
+---
+
+<div class="preloader" data-preloader aria-hidden="true">
+  <div class="preloader-inner">
+    <span class="preloader-count mono-label" data-preloader-count>000</span>
+    <span class="preloader-stroke stroke stroke--accent" data-preloader-stroke></span>
+  </div>
+</div>
+
+<style>
+  .preloader {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-preloader);
+    display: grid;
+    place-items: center;
+    background: var(--c-bg);
+  }
+
+  :root[data-preload='skip'] .preloader {
+    display: none;
+  }
+
+  .preloader-inner {
+    display: grid;
+    gap: 12px;
+    inline-size: min(240px, 50vw);
+  }
+
+  .preloader-count {
+    font-size: 1rem;
+    color: var(--c-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .preloader-stroke {
+    inline-size: 100%;
+    transform: scaleX(0);
+    transform-origin: var(--origin-start);
+  }
+
+  /* JS-failure bail: wipe up after the cap window regardless */
+  :root[data-preload='show'] .preloader {
+    animation: preloader-bail 400ms var(--ease) 1.6s forwards;
+  }
+  @keyframes preloader-bail {
+    to {
+      transform: translateY(-100%);
+      visibility: hidden;
+    }
+  }
+</style>

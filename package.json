@@ -1,0 +1,19 @@
+{
+  "name": "yasir-portfolio",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "YASIR_ · ياسر — bilingual portfolio, built to the brand system",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "contrast": "node scripts/contrast.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "gsap": "^3.12.0",
+    "lenis": "^1.1.0",
+    "ogl": "^1.0.0"
+  }
+}

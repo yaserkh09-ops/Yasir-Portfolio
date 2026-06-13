@@ -1,0 +1,11 @@
+{
+  "_todo": "Wire Lighthouse CI: add `@lhci/cli` to the deploy pipeline, run `lhci autorun --collect.url=<prod>/en/ --collect.settings.preset=mobile` after each production deploy, then commit the median-run summary into the fields below. The status terminal renders an em-dash for every null and never shows a pass-dot for it — values are NEVER hand-edited or faked.",
+  "updatedAt": null,
+  "source": null,
+  "performance": null,
+  "accessibility": null,
+  "bestPractices": null,
+  "seo": null,
+  "lcpMs": null,
+  "cls": null
+}

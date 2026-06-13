@@ -1,0 +1,16 @@
+<div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+<style>
+  /* 2px green Stroke fixed at block-start (§4: progress bar) */
+  .scroll-progress {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: var(--stroke-w);
+    z-index: var(--z-progress);
+    background: var(--c-accent);
+    transform: scaleX(0);
+    transform-origin: var(--origin-start);
+    pointer-events: none;
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+/**
+ * Custom cursor: 6px ink dot + trailing 28px ring that flattens into a
+ * short Stroke over interactive elements. Pointer:fine only, disabled
+ * under reduced motion, and the native cursor is NEVER hidden.
+ * Driven by scripts/cursor.ts.
+ */
+---
+
+<div class="cursor" data-cursor-root aria-hidden="true">
+  <div class="cursor-dot" data-cursor-dot></div>
+  <div class="cursor-ring" data-cursor-ring></div>
+</div>
+
+<style>
+  .cursor {
+    display: none;
+  }
+
+  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .cursor {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-cursor);
+      pointer-events: none;
+    }
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    opacity: 0; /* revealed on first pointermove */
+  }
+
+  .cursor-dot {
+    inline-size: 6px;
+    block-size: 6px;
+    margin: -3px 0 0 -3px;
+    border-radius: 50%;
+    background: var(--c-text);
+  }
+
+  .cursor-ring {
+    inline-size: 28px;
+    block-size: 28px;
+    margin: -14px 0 0 -14px;
+    border: 1px solid var(--c-text);
+    border-radius: 50%;
+    transition:
+      block-size var(--t-fast) var(--ease),
+      margin var(--t-fast) var(--ease),
+      border-radius var(--t-fast) var(--ease),
+      background-color var(--t-fast) var(--ease),
+      border-color var(--t-fast) var(--ease);
+  }
+
+  /* Over interactive targets the ring becomes a short Stroke (§4) */
+  .cursor.is-interactive .cursor-ring {
+    block-size: 3px;
+    margin-block-start: -1.5px;
+    border-radius: 2px;
+    border-color: transparent;
+    background: var(--c-accent);
+  }
+</style>

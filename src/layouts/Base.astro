@@ -1,0 +1,85 @@
+---
+import '../styles/global.css';
+import { dicts, locales, altLocale, type Locale } from '../i18n';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Preloader from '../components/Preloader.astro';
+import ScrollProgress from '../components/ScrollProgress.astro';
+import Cursor from '../components/Cursor.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const info = locales[locale];
+const alt = locales[altLocale(locale)];
+const dict = dicts[locale];
+const site = Astro.site!;
+
+// Above-the-fold faces only: headline + body + mono (wordmark/terminal).
+const preloads =
+  locale === 'ar'
+    ? [
+        '/fonts/ibm-plex-sans-arabic-arabic-700-normal.woff2',
+        '/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2',
+        '/fonts/ibm-plex-mono-latin-500-normal.woff2',
+      ]
+    : [
+        '/fonts/ibm-plex-sans-latin-600-normal.woff2',
+        '/fonts/ibm-plex-sans-latin-400-normal.woff2',
+        '/fonts/ibm-plex-mono-latin-500-normal.woff2',
+      ];
+---
+
+<!doctype html>
+<html lang={info.lang} dir={info.dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{dict.meta.title}</title>
+    <meta name="description" content={dict.meta.description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={new URL(info.htmlPath, site)} />
+    <link rel="alternate" hreflang={info.lang} href={new URL(info.htmlPath, site)} />
+    <link rel="alternate" hreflang={alt.lang} href={new URL(alt.htmlPath, site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/en/', site)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={dict.meta.title} />
+    <meta property="og:description" content={dict.meta.description} />
+    <meta property="og:locale" content={info.ogLocale} />
+    {preloads.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
+    <script is:inline>
+      /* Pre-paint: resolve stored theme + preloader skip (no FOUC, no flash). */
+      (function () {
+        var d = document.documentElement;
+        try {
+          var t = localStorage.getItem('yasir:theme');
+          if (t === 'light' || t === 'dark') d.dataset.theme = t;
+        } catch (e) {}
+        try {
+          var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          d.dataset.preload =
+            rm || sessionStorage.getItem('yasir:visited') ? 'skip' : 'show';
+        } catch (e) {
+          d.dataset.preload = 'skip';
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{dict.skipLink}</a>
+    <Preloader />
+    <ScrollProgress />
+    <Nav locale={locale} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+    <Cursor />
+    <script>
+      import '../scripts/app';
+    </script>
+  </body>
+</html>

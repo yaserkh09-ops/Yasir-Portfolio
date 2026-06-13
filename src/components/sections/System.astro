@@ -1,0 +1,115 @@
+---
+import { dicts, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const s = dicts[locale].system;
+---
+
+<!-- The page's single pinned scene. Default markup is the unpinned static
+     list (reduced-motion / no-JS); scripts/motion.ts sets data-mode="pinned"
+     and drives progress + active step via ScrollTrigger. -->
+<section id="process" class="system" data-system>
+  <div class="container">
+    <header class="system-header">
+      <p class="mono-label system-label">{s.label}</p>
+      <h2 class="h2">{s.heading}</h2>
+    </header>
+
+    <div class="system-stage">
+      <div class="system-progress" aria-hidden="true">
+        <span class="system-progress-fill stroke stroke--accent" data-system-progress></span>
+      </div>
+      <ol class="system-steps" role="list">
+        {
+          s.steps.map((step, i) => (
+            <li class="system-step" data-system-step={i}>
+              <span class="step-label mono-label">{step.label}</span>
+              <p class="step-copy h3">{step.copy}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .system {
+    padding-block: clamp(64px, 10vh, 128px);
+  }
+
+  .system-header {
+    display: grid;
+    gap: 16px;
+    margin-block-end: clamp(48px, 7vh, 80px);
+  }
+
+  .system-label {
+    color: var(--c-accent);
+  }
+
+  .system-progress {
+    block-size: var(--stroke-w);
+    background: var(--c-line);
+    margin-block-end: 8px;
+  }
+  .system-progress-fill {
+    inline-size: 100%;
+    transform: scaleX(0);
+    transform-origin: var(--origin-start);
+  }
+  /* static mode: the line reads as a divider, not an empty meter */
+  .system:not([data-mode='pinned']) .system-progress-fill {
+    display: none;
+  }
+
+  .system-steps {
+    display: grid;
+  }
+
+  .system-step {
+    display: grid;
+    grid-template-columns: minmax(120px, 180px) 1fr;
+    gap: 16px 24px;
+    align-items: start;
+    padding-block: 28px;
+    border-block-end: var(--hairline) solid var(--c-line);
+  }
+  @media (max-width: 640px) {
+    .system-step {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .step-label {
+    color: var(--c-text-2);
+    padding-block-start: 6px;
+  }
+
+  .step-copy {
+    max-inline-size: 44ch;
+    font-weight: 500;
+  }
+
+  /* pinned mode: stage fills the viewport while steps tick through */
+  .system[data-mode='pinned'] .system-stage {
+    min-block-size: 72vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .system[data-mode='pinned'] .system-step {
+    opacity: 0.3;
+    transition: opacity var(--t-med) var(--ease);
+  }
+  .system[data-mode='pinned'] .system-step.is-active {
+    opacity: 1;
+  }
+  .system[data-mode='pinned'] .system-step.is-active .step-label {
+    color: var(--c-accent);
+  }
+</style>

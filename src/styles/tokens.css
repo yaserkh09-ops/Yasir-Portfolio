@@ -1,0 +1,208 @@
+/* ============================================================
+   YASIR_ · ياسر — design tokens
+   Source of truth: YASIR-brand-guideline-v1.md §2 (color), §3 (type).
+   Recompute contrast on ANY change: `npm run contrast`.
+
+   VERIFIED CONTRAST — computed 2026-06-13 (scripts/contrast.mjs,
+   WCAG 2.1 relative luminance):
+
+     Core pairs (match guideline §2.3 exactly):
+       ink on paper            17.48 : 1  AAA
+       stone-700 on paper       7.06 : 1  AAA
+       stone-500 on paper       5.31 : 1  AA
+       signal-green on paper    5.02 : 1  AA
+       white on signal-green    5.42 : 1  AA
+       paper on surface        16.90 : 1  AAA
+       paper on panel          15.23 : 1  AAA
+       stone-400 on surface     7.21 : 1  AAA
+       signal-green-d on surf   7.79 : 1  AAA
+       ink on signal-green-d    8.07 : 1  AAA
+
+     Glass over WORST-CASE canvas backdrop (a 100% ink/paper
+     particle cluster — denser than the real field ever renders):
+       glass-light worst composite = #C5C4C0
+         ink on glass-light       10.82 : 1  PASS text
+         stone-700 on glass-light  4.37 : 1  FAIL text
+         signal-green on glass     3.11 : 1  non-text only
+       glass-dark worst composite  = #555451
+         paper on glass-dark       7.01 : 1  PASS text
+         stone-400 on glass-dark   2.99 : 1  FAIL text
+         signal-green-d on glass   3.23 : 1  non-text only
+
+   HARD RULE derived from the math above: text on glass surfaces is
+   ALWAYS full ink (light) / paper (dark). Stone secondary tones and
+   green are forbidden as text on glass; green on glass is limited to
+   non-text indicators (pass-dots, strokes), which clear the 3:1
+   non-text minimum.
+
+   Glass scope (prompt supersedes CLAUDE.md §4): nav, status terminal,
+   hero CTA card, modal surfaces. Nothing else is ever transparent.
+   ============================================================ */
+
+:root {
+  /* --- raw palette, light (§2.1) --- */
+  --paper: #f8f6f1;
+  --ink: #111111;
+  --stone-700: #57534e;
+  --stone-500: #6c655f;
+  --stone-300: #d8d4cc;
+  --signal-green: #0b7a40;
+  --error: #b42318;
+  --white: #ffffff;
+
+  /* --- raw palette, dark (§2.2) --- */
+  --surface: #161513;
+  --panel: #211f1b;
+  --stone-400: #a8a29a;
+  --signal-green-d: #3fbf7f;
+  --error-d: #f08c7d;
+
+  /* --- semantic, light mode default --- */
+  --c-bg: var(--paper);
+  --c-card: var(--white);
+  --c-text: var(--ink);
+  --c-text-2: var(--stone-700);
+  --c-text-3: var(--stone-500);
+  --c-line: var(--stone-300); /* non-text only — 1.37:1 vs paper */
+  --c-accent: var(--signal-green);
+  --c-on-accent: var(--white);
+  --c-error: var(--error);
+
+  /* inverse tokens — proof band renders in the opposite mode */
+  --c-bg-inverse: var(--surface);
+  --c-text-inverse: var(--paper);
+  --c-text-2-inverse: var(--stone-400);
+  --c-accent-inverse: var(--signal-green-d);
+  --c-line-inverse: color-mix(in srgb, var(--paper) 16%, transparent);
+
+  /* --- glass (the ONLY transparency in the system) --- */
+  --glass-bg: color-mix(in srgb, #f8f6f1 78%, transparent);
+  --glass-blur: blur(20px) saturate(160%);
+  --glass-border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+
+  /* canvas particle colors (hero WebGL reads these via JS) */
+  --gl-point: var(--ink);
+  --gl-accent: var(--signal-green);
+
+  /* --- type --- */
+  --font-sans: 'IBM Plex Sans', 'plex-sans-fb', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'plex-mono-fb', ui-monospace, 'SF Mono', monospace;
+
+  /* Latin scale (§3.2); AR overrides below (§3.3 — own logic, not ratios) */
+  --fs-h1: clamp(2.5rem, 1.05rem + 4.5vw, 5rem); /* 56 base → ~80 ≥1280px */
+  --lh-h1: 1.14;
+  --fw-h1: 600;
+  --fs-h2: clamp(1.75rem, 1.45rem + 1.25vw, 2.25rem); /* 36/44 */
+  --lh-h2: 1.22;
+  --fw-h2: 600;
+  --fs-h3: 1.5rem; /* 24/32 */
+  --lh-h3: 1.333;
+  --fs-body-l: 1.125rem; /* 18/28 */
+  --lh-body-l: 1.556;
+  --fs-body: 1rem; /* 16/26 */
+  --lh-body: 1.625;
+  --fs-label: 0.8125rem; /* 13/20 mono labels */
+  --lh-label: 1.538;
+  --fs-credit: 0.75rem; /* 12/16 footer credit, §1.5 */
+  --track-h1: -0.01em;
+  --track-label: 0.06em;
+  --track-wordmark: 0.16em;
+
+  /* --- motion (one easing everywhere) --- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 200ms;
+  --t-med: 500ms;
+  --t-slow: 900ms;
+
+  /* --- structure --- */
+  --stroke-w: 2px;
+  --hairline: 1px;
+  --space-unit: 8px;
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --content-max: 90rem;
+  --target-min: 44px; /* minimum hit target */
+  --radius: 4px;
+  --radius-panel: 8px;
+
+  /* --- z layers --- */
+  --z-canvas: 0;
+  --z-content: 1;
+  --z-nav: 50;
+  --z-progress: 60;
+  --z-cursor: 100;
+  --z-preloader: 200;
+
+  color-scheme: light;
+}
+
+/* Arabic tree — sizes are set values per §3.3, never converted Latin */
+:root[lang='ar'] {
+  --font-sans: 'IBM Plex Sans Arabic', 'plex-sans-fb', system-ui, sans-serif;
+  --fs-h1: clamp(2.25rem, 1rem + 4vw, 4.5rem); /* 50 base → ~72 ≥1280px */
+  --lh-h1: 1.36;
+  --fw-h1: 700; /* SemiBold reads underweight in AR display */
+  --fs-h2: clamp(1.625rem, 1.35rem + 1.15vw, 2.0625rem); /* 33/48 */
+  --lh-h2: 1.455;
+  --fs-h3: 1.375rem; /* 22/36 */
+  --lh-h3: 1.636;
+  --fs-body-l: 1.1875rem; /* 19/34 */
+  --lh-body-l: 1.789;
+  --fs-body: 1.0625rem; /* 17/30 — never below 1.7 */
+  --lh-body: 1.765;
+  --lh-label: 1.692; /* 13/22 */
+  --track-h1: 0; /* never letter-space Arabic */
+}
+
+/* dark mode — explicit toggle */
+:root[data-theme='dark'] {
+  --c-bg: var(--surface);
+  --c-card: var(--panel);
+  --c-text: var(--paper);
+  --c-text-2: var(--stone-400);
+  --c-text-3: var(--stone-400);
+  --c-line: color-mix(in srgb, var(--paper) 14%, transparent);
+  --c-accent: var(--signal-green-d);
+  --c-on-accent: var(--ink); /* ink on signal-green-d = 8.07:1 */
+  --c-error: var(--error-d);
+
+  --c-bg-inverse: var(--paper);
+  --c-text-inverse: var(--ink);
+  --c-text-2-inverse: var(--stone-700);
+  --c-accent-inverse: var(--signal-green);
+  --c-line-inverse: var(--stone-300);
+
+  --glass-bg: color-mix(in srgb, #161513 72%, transparent);
+
+  --gl-point: var(--paper);
+  --gl-accent: var(--signal-green-d);
+
+  color-scheme: dark;
+}
+
+/* dark mode — system preference, before JS or with JS off */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --c-bg: var(--surface);
+    --c-card: var(--panel);
+    --c-text: var(--paper);
+    --c-text-2: var(--stone-400);
+    --c-text-3: var(--stone-400);
+    --c-line: color-mix(in srgb, var(--paper) 14%, transparent);
+    --c-accent: var(--signal-green-d);
+    --c-on-accent: var(--ink);
+    --c-error: var(--error-d);
+
+    --c-bg-inverse: var(--paper);
+    --c-text-inverse: var(--ink);
+    --c-text-2-inverse: var(--stone-700);
+    --c-accent-inverse: var(--signal-green);
+    --c-line-inverse: var(--stone-300);
+
+    --glass-bg: color-mix(in srgb, #161513 72%, transparent);
+
+    --gl-point: var(--paper);
+    --gl-accent: var(--signal-green-d);
+
+    color-scheme: dark;
+  }
+}
