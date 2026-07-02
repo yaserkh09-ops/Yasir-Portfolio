@@ -6,12 +6,16 @@ export interface WorkCard {
   line: string;
   /** Longer copy shown in the project modal. */
   details: string;
+  /** Storytelling paragraphs after the lead (challenge → approach). */
+  story: string[];
   /** Checkmark bullet points in the project modal (Stripe-style). */
   bullets: string[];
   /** Live project URL — modal renders its visit button only when set. */
   url: string | null;
   /** Screenshot under /public — placeholder art renders while null. */
   image: string | null;
+  /** Extra section captures shown in the modal gallery. */
+  gallery: string[];
 }
 
 export interface SystemStep {
