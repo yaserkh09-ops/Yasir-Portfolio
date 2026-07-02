@@ -26,17 +26,19 @@ varying float vGreen;
 varying float vAlpha;
 void main() {
   vec2 pos = position;
-  // horizontal flow with edge wrap
+  // horizontal flow with edge wrap. The wrap domain (uRes.x + 40) MUST
+  // equal the spawn domain in buildGeometry — a mismatch circulates an
+  // empty window through the band (the visible "split").
   pos.x = mod(pos.x + uTime * 34.0 * uDir, uRes.x + 40.0) - 20.0;
   // gentle vertical wobble so the band breathes
   pos.y += sin(pos.x * 0.012 + uTime * 0.9 + aData.x * 6.2831) * 4.0;
 
   vec2 clip = (pos / uRes) * 2.0 - 1.0;
   gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
-  gl_PointSize = (1.7 * (0.7 + aData.x * 0.5)) * uDpr;
+  gl_PointSize = ((aData.y > 0.5 ? 2.8 : 2.2) * (0.7 + aData.x * 0.5)) * uDpr;
 
   vGreen = aData.y;
-  vAlpha = 0.4 + aData.x * 0.2;
+  vAlpha = (aData.y > 0.5 ? 0.85 : 0.58) + aData.x * 0.22;
 }`;
 
 const FRAGMENT = /* glsl */ `
@@ -62,7 +64,9 @@ const cssColor = (name: string): [number, number, number] => {
 };
 
 const buildGeometry = (gl: WebGLRenderingContext, w: number, h: number) => {
-  const cols = Math.max(1, Math.ceil(w / COL_GAP));
+  // spawn across the FULL wrap domain (canvas width + 40px margin) so the
+  // shader's mod() wrap is seamless — see the note in the vertex shader
+  const cols = Math.max(1, Math.ceil((w + 40) / COL_GAP));
   let rows = ROWS;
   while (cols * rows > MAX_POINTS && rows > 1) rows -= 1;
 

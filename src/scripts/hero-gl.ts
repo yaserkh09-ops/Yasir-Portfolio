@@ -129,11 +129,12 @@ void main() {
   vec2 clip = (pos / uRes) * 2.0 - 1.0;
   gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
 
-  float size = 1.6 * (0.75 + seed * 0.5);
+  // greens read as signals: larger and brighter than the field
+  float size = (green > 0.5 ? 3.0 : 2.1) * (0.75 + seed * 0.5);
   gl_PointSize = size * uDpr;
 
   vGreen = green;
-  vAlpha = 0.3 + seed * 0.15 + f * 0.25;
+  vAlpha = (green > 0.5 ? 0.85 : 0.48) + seed * 0.18 + f * 0.25;
 }`;
 
 const FRAGMENT = /* glsl */ `

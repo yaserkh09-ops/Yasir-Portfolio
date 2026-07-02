@@ -49,4 +49,11 @@
   .footer-field :global(canvas.is-on) {
     opacity: 1;
   }
+
+  /* the static band is fallback-only: retire it once the live band is
+     on so dots never render doubled */
+  :global([data-footer-field]:has(canvas.is-on) .footer-fallback) {
+    opacity: 0;
+    transition: opacity 600ms var(--ease);
+  }
 </style>
