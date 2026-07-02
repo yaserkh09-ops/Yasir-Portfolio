@@ -9,22 +9,24 @@ const { locale } = Astro.props;
 const d = dicts[locale].hero;
 
 /**
- * Rows map to /public/metrics.json (committed from Lighthouse CI — see the
- * TODO note in that file). Server-rendered values are honest em-dashes;
+ * Rows map to /public/metrics.json (see the notes in that file — the two
+ * Lighthouse rows are measured, satisfaction is the studio's stated
+ * commitment). Server-rendered values are honest em-dashes;
  * scripts/terminal.ts fills real values only when they exist. Targets live
- * in terminal.ts: performance >= 95, accessibility = 100, LCP <= 2500ms.
+ * in terminal.ts: performance >= 95, accessibility = 100, satisfaction = 100.
  */
 const rows = [
   { key: 'PERFORMANCE', metric: 'performance' },
   { key: 'ACCESSIBILITY', metric: 'accessibility' },
-  { key: 'PARTNER SATISFACTION', metric: 'lcp' },
+  { key: 'PARTNER SATISFACTION', metric: 'satisfaction' },
 ];
 ---
 
 <aside class="terminal glass" aria-label={d.terminalAria} data-terminal data-not-measured={d.notMeasured}>
-  <p class="t-title mono-label">{d.terminalTitle}</p>
+  <!-- title + subtitle are locale-aware copy (Arabic on /ar/); row keys stay Latin mono -->
+  <p class="t-title ui-label">{d.terminalTitle}</p>
   <div class="t-body" data-terminal-body>
-    <p class="t-cmd mono-label">
+    <p class="t-cmd ui-label">
       <span class="t-prompt" aria-hidden="true">✓&nbsp;</span><span data-t-cmd>{d.terminalCmd}</span>
     </p>
     <ul role="list">
@@ -60,6 +62,18 @@ const rows = [
     color: inherit;
     padding-block-end: 10px;
     border-block-end: var(--hairline) solid color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  /* Arabic needs a touch more size at label scale for legibility.
+     Weights pinned to the PRELOADED Arabic faces (700/400) so this
+     above-the-fold text can never swap-shift (CLS 0). */
+  :global(:root[lang='ar']) .t-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+  :global(:root[lang='ar']) .t-cmd {
+    font-size: 0.9375rem;
+    font-weight: 400;
   }
 
   .t-body {

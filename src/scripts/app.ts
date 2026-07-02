@@ -5,6 +5,7 @@ import { initCursor } from './cursor';
 import { initTerminal } from './terminal';
 import { initHeroGL } from './hero';
 import { initFooterGL } from './footer';
+import { initModals } from './modal';
 import { runPreloader } from './preloader';
 
 /**
@@ -15,6 +16,7 @@ import { runPreloader } from './preloader';
 const start = async () => {
   initTheme();
   initProgress();
+  initModals();
 
   if (reducedMotion()) {
     initTerminal();

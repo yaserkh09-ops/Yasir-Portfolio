@@ -1,5 +1,5 @@
 ---
-import { dicts, locales, type Locale } from '../../i18n';
+import { dicts, type Locale } from '../../i18n';
 import CardArt from './CardArt.astro';
 
 interface Props {
@@ -9,8 +9,6 @@ interface Props {
 const { locale } = Astro.props;
 const dict = dicts[locale];
 const w = dict.work;
-// TODO(yasir): point at real case routes once /work/ ships (Stage 2 sitemap)
-const workIndexHref = `${locales[locale].htmlPath}work/`;
 ---
 
 <section id="work" class="work container">
@@ -29,7 +27,9 @@ const workIndexHref = `${locales[locale].htmlPath}work/`;
             </div>
           </div>
           <h3 class="card-title">
-            <a class="card-anchor" href={workIndexHref}>
+            {/* no-JS fallback: falls through to the contact section;
+                scripts/modal.ts intercepts and opens this card's dialog */}
+            <a class="card-anchor" href="#contact" aria-haspopup="dialog">
               {card.client}
             </a>
           </h3>
@@ -44,6 +44,26 @@ const workIndexHref = `${locales[locale].htmlPath}work/`;
             </svg>
           </p>
           <span class="card-hairline" aria-hidden="true" />
+
+          <dialog class="work-modal glass" data-work-modal aria-labelledby={`wm-title-${i}`}>
+            <button type="button" class="wm-close" data-modal-close aria-label={w.modalClose}>
+              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.5" />
+              </svg>
+            </button>
+            <p class="wm-meta mono-label">
+              {card.client} · {card.sector} · {card.year}
+            </p>
+            <h3 class="wm-title h3" id={`wm-title-${i}`}>{card.client}</h3>
+            <p class="wm-details">{card.details}</p>
+            {
+              card.url && (
+                <a class="btn wm-visit" href={card.url} target="_blank" rel="noopener">
+                  {w.modalVisit}
+                </a>
+              )
+            }
+          </dialog>
         </li>
       ))
     }
@@ -202,5 +222,57 @@ const workIndexHref = `${locales[locale].htmlPath}work/`;
   }
   .work-card:hover .card-hairline {
     background: var(--c-accent);
+  }
+
+  /* ---------- project modal (glass — permitted surface) ---------- */
+  .work-modal {
+    /* text on glass is always full ink/paper — tokens.css contrast log */
+    color: var(--c-text);
+    inline-size: min(92vw, 560px);
+    margin: auto;
+    padding: clamp(24px, 4vw, 40px);
+    border: var(--glass-border);
+  }
+  .work-modal[open] {
+    display: grid;
+    gap: 14px;
+    animation: wm-in 400ms var(--ease);
+  }
+  @keyframes wm-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.97);
+    }
+  }
+  .work-modal::backdrop {
+    background: color-mix(in srgb, #161513 55%, transparent);
+  }
+
+  .wm-close {
+    position: absolute;
+    inset-block-start: 8px;
+    inset-inline-end: 8px;
+    display: grid;
+    place-items: center;
+    inline-size: var(--target-min);
+    block-size: var(--target-min);
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    border-radius: var(--radius);
+  }
+
+  .wm-meta {
+    color: inherit;
+  }
+
+  .wm-details {
+    max-inline-size: 52ch;
+  }
+
+  .wm-visit {
+    justify-self: start;
+    margin-block-start: 8px;
   }
 </style>

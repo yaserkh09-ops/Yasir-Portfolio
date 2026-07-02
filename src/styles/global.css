@@ -124,7 +124,9 @@ i {
   font-family: var(--font-sans);
   letter-spacing: 0;
   text-transform: none;
-  font-weight: 600;
+  /* 700, not 600: the Bold face is preloaded, so above-the-fold Arabic
+     labels can never wrap differently during font swap (CLS 0) */
+  font-weight: 700;
 }
 
 /* Numbers/codes remain LTR islands inside RTL text (§3.4.1) */
@@ -181,6 +183,11 @@ main {
 :focus-visible {
   outline: 2px solid var(--c-accent);
   outline-offset: 2px;
+}
+
+/* page scroll freezes while a project modal is in the top layer */
+:root[data-modal-open] {
+  overflow: hidden;
 }
 
 ::selection {
@@ -273,7 +280,7 @@ main {
   font-family: var(--font-sans); /* Plex Mono has no Arabic — sibling treatment */
   letter-spacing: 0;
   text-transform: none;
-  font-weight: 600;
+  font-weight: 700; /* preloaded face — no swap reflow (see .ui-label note) */
 }
 /* Stroke underline sweep on hover */
 .btn::after {
