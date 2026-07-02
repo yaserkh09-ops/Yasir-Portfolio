@@ -6,6 +6,12 @@
  * under the global reduced-motion kill switch.
  */
 export const initModals = () => {
+  // input-modality tracker: focus restored after a POINTER close must not
+  // paint a focus ring on the card; keyboard (ESC/Tab) closes keep it
+  let keyboardIntent = false;
+  addEventListener('keydown', () => (keyboardIntent = true), true);
+  addEventListener('pointerdown', () => (keyboardIntent = false), true);
+
   document.querySelectorAll<HTMLElement>('[data-work-card]').forEach((card) => {
     const anchor = card.querySelector<HTMLAnchorElement>('.card-anchor');
     const dialog = card.querySelector<HTMLDialogElement>('[data-work-modal]');
@@ -32,7 +38,13 @@ export const initModals = () => {
 
     dialog.addEventListener('close', () => {
       delete document.documentElement.dataset.modalOpen;
-      anchor.focus();
+      if (!keyboardIntent) {
+        anchor.classList.add('no-focus-ring');
+        anchor.addEventListener('blur', () => anchor.classList.remove('no-focus-ring'), {
+          once: true,
+        });
+      }
+      anchor.focus({ preventScroll: true });
     });
   });
 };
