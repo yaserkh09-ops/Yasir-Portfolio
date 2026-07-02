@@ -31,11 +31,11 @@ const greens = [
 >
   <defs>
     <pattern id="hg" width="16" height="16" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1.3" fill="var(--gl-point)" opacity="0.32"></circle>
+      <circle cx="2" cy="2" r="1.3" fill="var(--gl-point)" opacity="0.4"></circle>
     </pattern>
   </defs>
   <rect width="1440" height="900" fill="url(#hg)"></rect>
-  {greens.map(([x, y]) => <circle cx={x} cy={y} r="2.5" fill="var(--gl-accent)" />)}
+  {greens.map(([x, y]) => <circle cx={x} cy={y} r="6" fill="var(--gl-accent)" />)}
 </svg>
 
 <style>
@@ -47,10 +47,11 @@ const greens = [
   }
 
   /* small screens: the field recedes so hero text keeps its contrast
-     (mirrors the live canvas's uDamp) */
+     (mirrors the live canvas's uDamp; 0.45 compensates the raised
+     desktop opacity so mobile looks unchanged) */
   @media (max-width: 767px) {
     .hero-fallback {
-      opacity: 0.55;
+      opacity: 0.45;
     }
   }
 </style>

@@ -121,10 +121,16 @@ export const mount = (field: HTMLElement) => {
   });
 
   let mesh: Mesh | null = null;
+  let lastW = 0;
+  let lastH = 0;
   const rebuild = () => {
     const w = field.clientWidth;
     const h = field.clientHeight;
     if (w === 0 || h === 0) return;
+    // ignore URL-bar resize noise — re-seeding mid-scroll makes dots jump
+    if (Math.abs(w - lastW) < 2 && Math.abs(h - lastH) < 2) return;
+    lastW = w;
+    lastH = h;
     renderer.setSize(w, h);
     program.uniforms.uRes.value = [w, h];
     mesh = new Mesh(gl, { mode: gl.POINTS, geometry: buildGeometry(gl, w, h), program });
