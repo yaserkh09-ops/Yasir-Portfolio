@@ -3,9 +3,9 @@ import { reducedMotion, EASE_CSS } from './env';
 type Theme = 'light' | 'dark';
 
 const current = (): Theme => {
-  const set = document.documentElement.dataset.theme as Theme | undefined;
-  if (set) return set;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  // light is the site default — dark only by explicit choice (stored
+  // preference applied pre-paint, or the toggle)
+  return (document.documentElement.dataset.theme as Theme | undefined) ?? 'light';
 };
 
 const apply = (theme: Theme) => {

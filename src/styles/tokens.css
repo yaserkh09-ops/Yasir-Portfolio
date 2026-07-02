@@ -179,30 +179,5 @@
   color-scheme: dark;
 }
 
-/* dark mode — system preference, before JS or with JS off */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --c-bg: var(--surface);
-    --c-card: var(--panel);
-    --c-text: var(--paper);
-    --c-text-2: var(--stone-400);
-    --c-text-3: var(--stone-400);
-    --c-line: color-mix(in srgb, var(--paper) 14%, transparent);
-    --c-accent: var(--signal-green-d);
-    --c-on-accent: var(--ink);
-    --c-error: var(--error-d);
-
-    --c-bg-inverse: var(--paper);
-    --c-text-inverse: var(--ink);
-    --c-text-2-inverse: var(--stone-700);
-    --c-accent-inverse: var(--signal-green);
-    --c-line-inverse: var(--stone-300);
-
-    --glass-bg: color-mix(in srgb, #161513 72%, transparent);
-
-    --gl-point: var(--paper);
-    --gl-accent: var(--signal-green-d);
-
-    color-scheme: dark;
-  }
-}
+/* No system-preference auto-dark: light is the site default (owner
+   decision). Dark applies only via the toggle ([data-theme='dark']). */

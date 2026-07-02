@@ -13,7 +13,10 @@ export default defineConfig({
   },
   i18n: {
     locales: ['en', 'ar'],
-    defaultLocale: 'en',
-    routing: { prefixDefaultLocale: true },
+    defaultLocale: 'ar',
+    // our own src/pages/index.astro handles the root redirect (to /ar/)
+    // with hreflang links and an instant JS replace — keep Astro's
+    // auto-generated redirect page out of the build
+    routing: { prefixDefaultLocale: true, redirectToDefaultLocale: false },
   },
 });
