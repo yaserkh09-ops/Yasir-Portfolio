@@ -44,18 +44,23 @@ direction-aware (`src/scripts/env.ts → dirSign`).
   hand-edited. The hero terminal renders an em-dash for every `null` and
   only shows a pass-dot when a value meets target.
 
-## Measured (local mobile-emulated Lighthouse, 2026-06-13)
+## Measured (local mobile-emulated Lighthouse, 2026-06-14)
 
-| Page  | Perf | A11y | BP  | SEO | CLS | TBT   |
-| ----- | ---- | ---- | --- | --- | --- | ----- |
-| `/en/`| 99   | 100  | 100 | 100 | 0   | 10ms  |
-| `/ar/`| 98   | 100  | 100 | 100 | 0   | 20ms  |
+| Page  | Perf | A11y | BP  | SEO | CLS   |
+| ----- | ---- | ---- | --- | --- | ----- |
+| `/en/`| 99   | 100  | 100 | 100 | 0.001 |
+| `/ar/`| 96   | 100  | 100 | 100 | 0.001 |
 
-axe-core: 0 violations on both trees.
+axe-core: 0 violations on both trees, including with a project modal open.
+The hero terminal reads these from `public/metrics.json` (worst of the two
+pages; `satisfaction` is the studio's stated commitment, not a Lighthouse
+output).
 
 ## Open items (intake)
 
 - Production domain → set in `astro.config.mjs` (`site`)
 - Contact mailbox → `CONTACT_EMAIL` in `src/i18n/index.ts`
+- Live project URLs → `url` field per card in `src/i18n/{en,ar}.ts`
+  (modal shows its visit button once set)
 - Replace work-card placeholder art with Stage-5 capture imagery
 - Wire Lighthouse CI → `public/metrics.json`

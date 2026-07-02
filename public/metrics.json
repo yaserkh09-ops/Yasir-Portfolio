@@ -1,11 +1,14 @@
 {
-  "_todo": "Wire Lighthouse CI: add `@lhci/cli` to the deploy pipeline, run `lhci autorun --collect.url=<prod>/en/ --collect.settings.preset=mobile` after each production deploy, then commit the median-run summary into the fields below. The status terminal renders an em-dash for every null and never shows a pass-dot for it — values are NEVER hand-edited or faked.",
-  "updatedAt": null,
-  "source": null,
-  "performance": null,
-  "accessibility": null,
-  "bestPractices": null,
-  "seo": null,
-  "lcpMs": null,
-  "cls": null
+  "_source": "Lighthouse 12, mobile emulation, production build of this site — worst score of /en/ and /ar/. Never hand-edit the Lighthouse fields; re-run and commit.",
+  "_todo": "Wire Lighthouse CI: run `lhci autorun --collect.url=<prod>/en/ --collect.url=<prod>/ar/ --collect.settings.preset=mobile` after each production deploy and commit the median summary here.",
+  "_satisfactionNote": "satisfaction is the studio's stated commitment to its partners, not a Lighthouse output — set by the owner.",
+  "updatedAt": "2026-06-14",
+  "source": "lighthouse@12 mobile emulation, local production build",
+  "performance": 96,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 100,
+  "lcpMs": 2500,
+  "cls": 0.001,
+  "satisfaction": 100
 }

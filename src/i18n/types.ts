@@ -4,6 +4,10 @@ export interface WorkCard {
   sector: string;
   year: string;
   line: string;
+  /** Longer copy shown in the project modal. */
+  details: string;
+  /** Live project URL — modal renders its visit button only when set. */
+  url: string | null;
 }
 
 export interface SystemStep {
@@ -52,6 +56,8 @@ export interface Dict {
     heading: string;
     line: string;
     cardCta: string;
+    modalClose: string;
+    modalVisit: string;
     cards: WorkCard[];
   };
   system: {

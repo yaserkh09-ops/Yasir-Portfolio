@@ -7,7 +7,7 @@ import type { Dict } from './types';
  */
 export const en: Dict = {
   meta: {
-    title: 'YASIR_ — Independent design & web studio',
+    title: 'YASIR_ — Independent web design & development partner',
     description:
       'Bilingual Arabic/English websites and brand systems for Saudi organizations — engineered to verifiable standards, written to convert, delivered fast.',
   },
@@ -46,30 +46,45 @@ export const en: Dict = {
     heading: 'Selected work.',
     line: 'Outcomes over deliverables — each case gets tailored solutions.',
     cardCta: 'View case',
+    modalClose: 'Close',
+    modalVisit: 'Visit live site',
+    // TODO(yasir): fill each card's `url` with the live project link when provided.
     cards: [
       {
         client: 'Najd Hands',
         sector: 'Nonprofit',
         year: '2025',
         line: 'A charity site rebuilt in both languages — each written from scratch for its reader.',
+        details:
+          'A full rebuild for a Saudi charity: one structure, two languages, each written natively for its reader. Clear paths to donate, volunteer and reach the team — on any device.',
+        url: null,
       },
       {
         client: 'SIPHA',
         sector: 'Healthcare',
         year: '2025',
         line: 'Brand system and site for a pharma supplier — governed, documented, handed off.',
+        details:
+          'A brand system and website for a pharmaceutical supplier — tokens, type and components documented so the team can extend it, with a bilingual site built on top.',
+        url: null,
       },
       {
         client: 'Four Colors',
         sector: 'Print production',
         year: '2026',
         line: 'A print house’s catalogue moved online — fast on the phones its clients actually use.',
+        details:
+          'A print house’s catalogue moved online: fast on mid-range phones, easy to browse, and simple for the team to keep up to date.',
+        url: null,
       },
       {
         client: 'Anjal Schools',
         sector: 'Education',
         year: '2026',
         line: 'A school site parents can navigate — two languages, one structure.',
+        details:
+          'A school website parents actually navigate: admissions, calendars and contacts in two languages, one consistent structure.',
+        url: null,
       },
     ],
   },

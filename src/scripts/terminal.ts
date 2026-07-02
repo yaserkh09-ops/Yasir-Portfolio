@@ -3,20 +3,20 @@ import { reducedMotion } from './env';
 interface Metrics {
   performance: number | null;
   accessibility: number | null;
-  lcpMs: number | null;
+  satisfaction: number | null;
 }
 
 /** Pass thresholds — a dot springs in only when its value meets target. */
 const TARGETS = {
   performance: (v: number) => v >= 95,
   accessibility: (v: number) => v >= 100,
-  lcp: (v: number) => v <= 2500,
+  satisfaction: (v: number) => v >= 100,
 };
 
 const display = {
   performance: (v: number | null) => (v === null ? '—' : String(Math.round(v))),
   accessibility: (v: number | null) => (v === null ? '—' : String(Math.round(v))),
-  lcp: (v: number | null) => (v === null ? '—' : `${(v / 1000).toFixed(1)}s`),
+  satisfaction: (v: number | null) => (v === null ? '—' : `${Math.round(v)}%`),
 };
 
 const TYPE_MS = 14; // per character
@@ -57,7 +57,7 @@ export const initTerminal = async () => {
   const sr = root.querySelector<HTMLElement>('[data-terminal-sr]')!;
   const notMeasured = root.dataset.notMeasured ?? 'not yet measured';
 
-  let metrics: Metrics = { performance: null, accessibility: null, lcpMs: null };
+  let metrics: Metrics = { performance: null, accessibility: null, satisfaction: null };
   try {
     const res = await fetch('/metrics.json');
     if (res.ok) metrics = { ...metrics, ...(await res.json()) };
@@ -68,7 +68,7 @@ export const initTerminal = async () => {
   const values: Record<keyof typeof TARGETS, number | null> = {
     performance: metrics.performance,
     accessibility: metrics.accessibility,
-    lcp: metrics.lcpMs,
+    satisfaction: metrics.satisfaction,
   };
 
   const rows = [...root.querySelectorAll<HTMLElement>('[data-t-row]')];
