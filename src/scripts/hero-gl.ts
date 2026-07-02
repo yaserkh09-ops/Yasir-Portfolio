@@ -24,7 +24,7 @@ const MAX_POINTS = 40000;
 const REPEL_RADIUS = 150;
 const REPEL_PUSH = 34;
 
-const GREEN_COUNT = 14; // the whole constellation (user spec: 10–20)
+const GREEN_COUNT = 8; // the whole constellation
 const SHOOT_MIN_S = 30; // seconds between shooting stars…
 const SHOOT_MAX_S = 45;
 const FIRST_SHOOT_S = 9; // …but show the first one early
@@ -147,10 +147,12 @@ attribute float aBoost;
 uniform vec2 uRes;
 uniform float uDpr;
 varying float vAlpha;
+varying float vSize;
 void main() {
   vec2 clip = (position / uRes) * 2.0 - 1.0;
   gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
-  gl_PointSize = (8.0 + aSeed * 2.0 + aBoost * 5.0) * uDpr;
+  vSize = (8.0 + aSeed * 2.0 + aBoost * 5.0) * uDpr;
+  gl_PointSize = vSize;
   vAlpha = 0.9 + aBoost * 0.1;
 }`;
 
@@ -158,9 +160,12 @@ const GREEN_FRAGMENT = /* glsl */ `
 precision mediump float;
 uniform vec3 uAccent;
 varying float vAlpha;
+varying float vSize;
 void main() {
   float d = length(gl_PointCoord - 0.5);
-  float alpha = smoothstep(0.5, 0.22, d) * vAlpha;
+  // crisp disc: ~1.5px anti-alias band scaled to the point's real size
+  float aa = max(1.5 / vSize, 0.02);
+  float alpha = (1.0 - smoothstep(0.5 - aa, 0.5, d)) * vAlpha;
   if (alpha < 0.01) discard;
   gl_FragColor = vec4(uAccent, alpha);
 }`;
@@ -200,17 +205,12 @@ const buildFieldGeometry = (gl: WebGLRenderingContext, w: number, h: number) => 
 interface Star {
   x: number;
   y: number;
+  /** base position — springs toward `target` during a flight */
   home: [number, number];
   phase: number;
-  // shooting-star flight state
-  from: [number, number] | null;
-  to: [number, number] | null;
-  start: number;
-  duration: number;
-  arc: number;
+  target: [number, number] | null;
+  boost: number; // smoothed flight-speed glow/size factor
 }
-
-const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
 export const mount = (field: HTMLElement) => {
   const renderer = new Renderer({
@@ -289,11 +289,8 @@ export const mount = (field: HTMLElement) => {
         y: home[1],
         home,
         phase: Math.random() * Math.PI * 2,
-        from: null,
-        to: null,
-        start: 0,
-        duration: 0,
-        arc: 0,
+        target: null,
+        boost: 0,
       });
     }
   };
@@ -332,8 +329,9 @@ export const mount = (field: HTMLElement) => {
 
   // shooting-star scheduler — driven by frame time so it pauses offscreen
   let nextShoot = FIRST_SHOOT_S;
-  const launchStar = (now: number) => {
-    const idle = stars.filter((s) => !s.to);
+  let lastNow = 0;
+  const launchStar = () => {
+    const idle = stars.filter((s) => !s.target);
     const star = idle[Math.floor(Math.random() * idle.length)];
     if (!star) return;
     let target = randomSpot();
@@ -342,45 +340,36 @@ export const mount = (field: HTMLElement) => {
       if (Math.hypot(target[0] - star.x, target[1] - star.y) >= Math.min(W, H) * 0.35) break;
       target = randomSpot();
     }
-    star.from = [star.x, star.y];
-    star.to = target;
-    star.start = now;
-    star.duration = 0.8 + Math.random() * 0.5; // fast — a meteor, not a drift
-    star.arc = (30 + Math.random() * 40) * (Math.random() < 0.5 ? -1 : 1);
+    star.target = target;
   };
 
   const updateStars = (now: number) => {
+    const dt = Math.min(Math.max(now - lastNow, 0), 0.05);
+    lastNow = now;
     if (now >= nextShoot) {
-      launchStar(now);
+      launchStar();
       nextShoot = now + SHOOT_MIN_S + Math.random() * (SHOOT_MAX_S - SHOOT_MIN_S);
     }
     for (let i = 0; i < GREEN_COUNT; i += 1) {
       const s = stars[i]!;
-      let boost = 0;
-      if (s.to && s.from) {
-        const t = Math.min(1, (now - s.start) / s.duration);
-        const e = easeInOut(t);
-        const dx = s.to[0] - s.from[0];
-        const dy = s.to[1] - s.from[1];
-        const len = Math.max(Math.hypot(dx, dy), 1);
-        // slight perpendicular arc, like a headliner shooting star
-        const bow = Math.sin(t * Math.PI) * s.arc;
-        s.x = s.from[0] + dx * e + (-dy / len) * bow;
-        s.y = s.from[1] + dy * e + (dx / len) * bow;
-        boost = Math.sin(t * Math.PI);
-        if (t >= 1) {
-          s.home = [s.to[0], s.to[1]];
-          s.from = null;
-          s.to = null;
-        }
-      } else {
-        // idle: gentle starlight drift around home
-        s.x = s.home[0] + Math.sin(now * 0.3 + s.phase) * 9;
-        s.y = s.home[1] + Math.cos(now * 0.23 + s.phase * 1.7) * 7;
+      let speed = 0;
+      if (s.target) {
+        // exponential spring: leaves fast, glides in smoothly, never snaps
+        const k = 1 - Math.exp(-dt * 3.2);
+        const dx = (s.target[0] - s.home[0]) * k;
+        const dy = (s.target[1] - s.home[1]) * k;
+        s.home[0] += dx;
+        s.home[1] += dy;
+        speed = Math.hypot(dx, dy) / Math.max(dt, 0.001);
+        if (Math.hypot(s.target[0] - s.home[0], s.target[1] - s.home[1]) < 1.5) s.target = null;
       }
+      // the centred-gravity drift stays live at all times — flying included
+      s.x = s.home[0] + Math.sin(now * 0.3 + s.phase) * 9;
+      s.y = s.home[1] + Math.cos(now * 0.23 + s.phase * 1.7) * 7;
+      s.boost += (Math.min(1, speed / 900) - s.boost) * 0.12;
       greenPos[i * 2] = s.x;
       greenPos[i * 2 + 1] = s.y;
-      greenBoost[i] = boost;
+      greenBoost[i] = s.boost;
       wells[i * 2] = s.x;
       wells[i * 2 + 1] = s.y;
     }

@@ -15,8 +15,9 @@ export interface LocaleInfo {
 
 export const locales: Record<Locale, LocaleInfo> = {
   en: { lang: 'en', dir: 'ltr', wordmark: 'YASIR_', ogLocale: 'en_US', htmlPath: '/en/' },
-  // ياســر — kashida (U+0640 ×2) between س and ر, per §1.2
-  ar: { lang: 'ar', dir: 'rtl', wordmark: 'ياســر', ogLocale: 'ar_SA', htmlPath: '/ar/' },
+  // ياســر — kashida (U+0640 ×2) between س and ر; trailing _ per owner
+  // (renders at the inline-end — the left — in RTL)
+  ar: { lang: 'ar', dir: 'rtl', wordmark: 'ياســر_', ogLocale: 'ar_SA', htmlPath: '/ar/' },
 };
 
 export const dicts: Record<Locale, Dict> = { en, ar };

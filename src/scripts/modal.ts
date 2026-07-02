@@ -14,6 +14,9 @@ export const initModals = () => {
     anchor.addEventListener('click', (e) => {
       e.preventDefault();
       dialog.showModal();
+      // focus the dialog itself, not its first button — otherwise mobile
+      // browsers paint a focus ring on the close button after every tap
+      dialog.focus();
       document.documentElement.dataset.modalOpen = '1';
     });
 
