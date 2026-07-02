@@ -115,6 +115,12 @@ const d = dicts[locale].hero;
     max-inline-size: 36ch;
     color: var(--c-text-2);
   }
+  /* small screens: full ink/paper — the sub sits directly on the field */
+  @media (max-width: 767px) {
+    .hero-sub {
+      color: var(--c-text);
+    }
+  }
 
   .hero-cta {
     display: inline-flex;

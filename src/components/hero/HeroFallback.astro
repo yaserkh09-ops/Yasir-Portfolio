@@ -5,15 +5,20 @@
  * (zero CLS) and remains the hero for reduced-motion, WebGL failure, and
  * deviceMemory < 4. (The flowing band now lives in the footer field.)
  */
+// ~12 signal points spread across the field (mirrors the live constellation)
 const greens = [
-  [180, 530],
-  [395, 512],
-  [610, 548],
-  [820, 521],
-  [1024, 539],
-  [1238, 508],
-  [502, 461],
-  [918, 588],
+  [180, 140],
+  [560, 90],
+  [1090, 170],
+  [1350, 320],
+  [90, 420],
+  [740, 380],
+  [1230, 540],
+  [330, 620],
+  [880, 660],
+  [1390, 780],
+  [520, 820],
+  [1050, 850],
 ];
 ---
 
@@ -39,5 +44,13 @@ const greens = [
     inset: 0;
     inline-size: 100%;
     block-size: 100%;
+  }
+
+  /* small screens: the field recedes so hero text keeps its contrast
+     (mirrors the live canvas's uDamp) */
+  @media (max-width: 767px) {
+    .hero-fallback {
+      opacity: 0.55;
+    }
   }
 </style>
