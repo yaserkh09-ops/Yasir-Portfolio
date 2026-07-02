@@ -24,6 +24,9 @@ export const initModals = () => {
 
     dialog.querySelector('[data-modal-close]')?.addEventListener('click', () => dialog.close());
 
+    // secondary CTA: close first so the #contact jump lands on the page
+    dialog.querySelector('[data-modal-contact]')?.addEventListener('click', () => dialog.close());
+
     dialog.addEventListener('close', () => {
       delete document.documentElement.dataset.modalOpen;
       anchor.focus();

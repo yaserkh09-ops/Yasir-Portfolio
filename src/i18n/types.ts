@@ -6,6 +6,8 @@ export interface WorkCard {
   line: string;
   /** Longer copy shown in the project modal. */
   details: string;
+  /** Checkmark bullet points in the project modal (Stripe-style). */
+  bullets: string[];
   /** Live project URL — modal renders its visit button only when set. */
   url: string | null;
 }
@@ -58,6 +60,8 @@ export interface Dict {
     cardCta: string;
     modalClose: string;
     modalVisit: string;
+    /** Secondary modal CTA — jumps to the contact section. */
+    modalContact: string;
     cards: WorkCard[];
   };
   system: {

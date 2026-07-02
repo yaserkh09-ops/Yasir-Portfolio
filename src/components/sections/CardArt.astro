@@ -7,10 +7,13 @@
 interface Props {
   index: number;
   client: string;
+  /** Unique suffix when the same art renders twice (card + modal). */
+  variant?: string;
 }
 
-const { index, client } = Astro.props;
+const { index, client, variant = '' } = Astro.props;
 const n = String(index + 1).padStart(2, '0');
+const pid = `cg-${index}${variant ? `-${variant}` : ''}`;
 // vary the band position per card so placeholders don't read as clones
 const bandY = [430, 150, 300, 510][index % 4];
 ---
@@ -21,14 +24,16 @@ const bandY = [430, 150, 300, 510][index % 4];
   preserveAspectRatio="xMidYMid slice"
   aria-hidden="true"
   focusable="false"
+  direction="ltr"
+  style="direction: ltr;"
 >
   <defs>
-    <pattern id={`cg-${index}`} width="20" height="20" patternUnits="userSpaceOnUse">
+    <pattern id={pid} width="20" height="20" patternUnits="userSpaceOnUse">
       <circle cx="2" cy="2" r="1.1" fill="var(--c-text)" opacity="0.18"></circle>
     </pattern>
   </defs>
   <rect width="800" height="600" fill="var(--c-card)"></rect>
-  <rect width="800" height="600" fill={`url(#cg-${index})`}></rect>
+  <rect width="800" height="600" fill={`url(#${pid})`}></rect>
   <text
     x="48"
     y="500"
@@ -38,7 +43,7 @@ const bandY = [430, 150, 300, 510][index % 4];
     fill="none"
     stroke="var(--c-text)"
     stroke-width="1.5"
-    opacity="0.28">{n}</text>
+    opacity="0.45">{n}</text>
   <rect x="48" y={bandY} width="120" height="4" fill="var(--c-accent)"></rect>
   <text
     x="48"

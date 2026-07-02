@@ -48,6 +48,7 @@ export const en: Dict = {
     cardCta: 'View case',
     modalClose: 'Close',
     modalVisit: 'Visit live site',
+    modalContact: 'Start a similar project',
     // TODO(yasir): fill each card's `url` with the live project link when provided.
     cards: [
       {
@@ -57,6 +58,11 @@ export const en: Dict = {
         line: 'A charity site rebuilt in both languages — each written from scratch for its reader.',
         details:
           'A full rebuild for a Saudi charity: one structure, two languages, each written natively for its reader. Clear paths to donate, volunteer and reach the team — on any device.',
+        bullets: [
+          'One structure serving Arabic and English equally',
+          'Clear donate, volunteer and contact paths',
+          'Handed off with documentation and training',
+        ],
         url: null,
       },
       {
@@ -66,6 +72,11 @@ export const en: Dict = {
         line: 'Brand system and site for a pharma supplier — governed, documented, handed off.',
         details:
           'A brand system and website for a pharmaceutical supplier — tokens, type and components documented so the team can extend it, with a bilingual site built on top.',
+        bullets: [
+          'Design tokens, type and components — documented',
+          'Bilingual site built on the brand system',
+          'The team extends it without outside help',
+        ],
         url: null,
       },
       {
@@ -75,6 +86,11 @@ export const en: Dict = {
         line: 'A print house’s catalogue moved online — fast on the phones its clients actually use.',
         details:
           'A print house’s catalogue moved online: fast on mid-range phones, easy to browse, and simple for the team to keep up to date.',
+        bullets: [
+          'Catalogue browsable on mid-range phones',
+          'Simple updates for the in-house team',
+          'Fast loading on real-world connections',
+        ],
         url: null,
       },
       {
@@ -84,6 +100,11 @@ export const en: Dict = {
         line: 'A school site parents can navigate — two languages, one structure.',
         details:
           'A school website parents actually navigate: admissions, calendars and contacts in two languages, one consistent structure.',
+        bullets: [
+          'Admissions, calendars and contacts — two languages',
+          'One consistent structure parents learn once',
+          'Accessible navigation for every visitor',
+        ],
         url: null,
       },
     ],

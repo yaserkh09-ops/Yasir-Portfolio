@@ -70,6 +70,13 @@ const d = dicts[locale].hero;
     opacity: 1;
   }
 
+  /* once the live field is warm, retire the static layer so dots
+     don't render doubled underneath the canvas */
+  :global([data-hero-field]:has(canvas.is-on) .hero-fallback) {
+    opacity: 0;
+    transition: opacity 600ms var(--ease);
+  }
+
   .hero-inner {
     position: relative;
     z-index: var(--z-content);
