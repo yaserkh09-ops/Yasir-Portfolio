@@ -49,7 +49,7 @@ export const ar: Dict = {
     modalClose: 'إغلاق',
     modalVisit: 'زيارة الموقع',
     modalContact: 'ابدأ مشروعًا مشابهًا',
-    // TODO(yasir): تُضاف روابط المشاريع الحية في حقل url عند توفرها.
+    shotAlt: 'لقطة من الصفحة الرئيسية',
     cards: [
       {
         client: 'Najd Hands',
@@ -63,7 +63,8 @@ export const ar: Dict = {
           'مسارات واضحة للتبرع والتطوع والتواصل',
           'تسليم كامل مع التوثيق والتدريب',
         ],
-        url: null,
+        url: 'https://najdhands.netlify.app',
+        image: null,
       },
       {
         client: 'SIPHA',
@@ -77,7 +78,8 @@ export const ar: Dict = {
           'موقع بلغتين مبني فوق نظام الهوية',
           'الفريق يوسّعه دون مساعدة خارجية',
         ],
-        url: null,
+        url: 'https://www.sipha-sps.com',
+        image: null,
       },
       {
         client: 'Four Colors',
@@ -91,7 +93,8 @@ export const ar: Dict = {
           'تحديثات بسيطة لفريق العمل الداخلي',
           'تحميل سريع على الشبكات الواقعية',
         ],
-        url: null,
+        url: 'https://www.fourcolors.sa',
+        image: null,
       },
       {
         client: 'Anjal Schools',
@@ -105,7 +108,38 @@ export const ar: Dict = {
           'بنية واحدة متسقة يتعلمها أولياء الأمور مرة واحدة',
           'تنقّل مُيسّر لكل زائر',
         ],
-        url: null,
+        url: 'https://anjal-schools.webflow.io',
+        image: null,
+      },
+      {
+        client: 'Alreaiah',
+        sector: 'خدمات رعاية',
+        year: '2025',
+        line: 'موقع لخدمات الرعاية تثق به العائلات — خدمات واضحة وتواصل بسيط.',
+        details:
+          'موقع لمزوّد خدمات رعاية: خدمات معروضة بوضوح، وثقة تُبنى بلغة بسيطة، وتواصل على بُعد نقرة — على أي جهاز.',
+        bullets: [
+          'خدمات معروضة بوضوح ودون تعقيد',
+          'تواصل على بُعد نقرة من أي جهاز',
+          'مبني ليُقرأ وتثق به العائلات',
+        ],
+        url: 'https://alreaiah.netlify.app',
+        image: null,
+      },
+      {
+        client: 'Abdulilah Alrajhi',
+        sector: 'علامة شخصية',
+        year: '2025',
+        line: 'موقع شخصي يقدّم صاحبه قبل سيرته الذاتية.',
+        details:
+          'موقع علامة شخصية لعبدالإله الراجحي: من هو، وماذا يعمل، وكيف تصل إليه — صفحات تتحدث بوضوح وتُحمَّل بسرعة.',
+        bullets: [
+          'قصة واضحة: من، وماذا، ولماذا',
+          'صفحات سريعة مركّزة على هدف واحد',
+          'سهل التحديث كلما كبرت القصة',
+        ],
+        url: 'https://abdulilahalrajhi.com',
+        image: null,
       },
     ],
   },

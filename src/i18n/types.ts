@@ -10,6 +10,8 @@ export interface WorkCard {
   bullets: string[];
   /** Live project URL — modal renders its visit button only when set. */
   url: string | null;
+  /** Screenshot under /public — placeholder art renders while null. */
+  image: string | null;
 }
 
 export interface SystemStep {
@@ -62,6 +64,8 @@ export interface Dict {
     modalVisit: string;
     /** Secondary modal CTA — jumps to the contact section. */
     modalContact: string;
+    /** Suffix for screenshot alt text: "<client> — <shotAlt>". */
+    shotAlt: string;
     cards: WorkCard[];
   };
   system: {

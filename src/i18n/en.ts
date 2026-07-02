@@ -49,7 +49,7 @@ export const en: Dict = {
     modalClose: 'Close',
     modalVisit: 'Visit live site',
     modalContact: 'Start a similar project',
-    // TODO(yasir): fill each card's `url` with the live project link when provided.
+    shotAlt: 'homepage screenshot',
     cards: [
       {
         client: 'Najd Hands',
@@ -63,7 +63,8 @@ export const en: Dict = {
           'Clear donate, volunteer and contact paths',
           'Handed off with documentation and training',
         ],
-        url: null,
+        url: 'https://najdhands.netlify.app',
+        image: null,
       },
       {
         client: 'SIPHA',
@@ -77,7 +78,8 @@ export const en: Dict = {
           'Bilingual site built on the brand system',
           'The team extends it without outside help',
         ],
-        url: null,
+        url: 'https://www.sipha-sps.com',
+        image: null,
       },
       {
         client: 'Four Colors',
@@ -91,7 +93,8 @@ export const en: Dict = {
           'Simple updates for the in-house team',
           'Fast loading on real-world connections',
         ],
-        url: null,
+        url: 'https://www.fourcolors.sa',
+        image: null,
       },
       {
         client: 'Anjal Schools',
@@ -105,7 +108,38 @@ export const en: Dict = {
           'One consistent structure parents learn once',
           'Accessible navigation for every visitor',
         ],
-        url: null,
+        url: 'https://anjal-schools.webflow.io',
+        image: null,
+      },
+      {
+        client: 'Alreaiah',
+        sector: 'Care services',
+        year: '2025',
+        line: 'A care-services site families can trust — clear services, simple contact.',
+        details:
+          'A website for a care-services provider: services laid out clearly, trust built with plain language, and contact one tap away — on any device.',
+        bullets: [
+          'Services presented clearly, without jargon',
+          'Contact one tap away on any device',
+          'Built to be read and trusted by families',
+        ],
+        url: 'https://alreaiah.netlify.app',
+        image: null,
+      },
+      {
+        client: 'Abdulilah Alrajhi',
+        sector: 'Personal brand',
+        year: '2025',
+        line: 'A personal site that introduces the person before the résumé.',
+        details:
+          'A personal brand site for Abdulilah Alrajhi: who he is, what he does, and how to reach him — pages that speak plainly and load fast.',
+        bullets: [
+          'A clear story: who, what, and why it matters',
+          'Fast, focused, single-purpose pages',
+          'Easy to keep current as the story grows',
+        ],
+        url: 'https://abdulilahalrajhi.com',
+        image: null,
       },
     ],
   },
