@@ -112,19 +112,19 @@ export const en: Dict = {
         image: '/work/anjal.jpg',
       },
       {
-        client: 'Alreaiah',
-        sector: 'Care services',
+        client: 'Alreaiah Almotanahiah',
+        sector: 'Care & education group',
         year: '2025',
-        line: 'A care-services site families can trust — clear services, simple contact.',
+        line: 'The group behind the care — schools, centres and their story in one home.',
         details:
-          'A website for a care-services provider: services laid out clearly, trust built with plain language, and contact one tap away — on any device.',
+          'The website of Alreaiah Almotanahiah, a Saudi group for education, training and comprehensive care: two arms, thirteen facilities across the Kingdom, and their news — in both languages.',
         bullets: [
-          'Services presented clearly, without jargon',
-          'Contact one tap away on any device',
-          'Built to be read and trusted by families',
+          'Two arms, one clear structure',
+          'Facilities, numbers and news in one place',
+          'Arabic and English, written natively',
         ],
         url: 'https://alreaiah.netlify.app',
-        image: null,
+        image: '/work/alreaiah.jpg',
       },
       {
         client: 'Abdulilah Alrajhi',
