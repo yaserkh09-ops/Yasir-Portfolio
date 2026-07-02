@@ -25,9 +25,8 @@ const REPEL_RADIUS = 150;
 const REPEL_PUSH = 34;
 
 const GREEN_COUNT = 8; // the whole constellation
-const SHOOT_MIN_S = 30; // seconds between shooting stars…
-const SHOOT_MAX_S = 45;
-const FIRST_SHOOT_S = 9; // …but show the first one early
+const SHOOT_INTERVAL_S = 12; // seconds between shooting stars…
+const FIRST_SHOOT_S = 6; // …with the first one early
 
 // Ashima 3D simplex noise; curl is taken in 2D via finite differences.
 const NOISE = /* glsl */ `
@@ -348,7 +347,7 @@ export const mount = (field: HTMLElement) => {
     lastNow = now;
     if (now >= nextShoot) {
       launchStar();
-      nextShoot = now + SHOOT_MIN_S + Math.random() * (SHOOT_MAX_S - SHOOT_MIN_S);
+      nextShoot = now + SHOOT_INTERVAL_S;
     }
     for (let i = 0; i < GREEN_COUNT; i += 1) {
       const s = stars[i]!;
