@@ -60,7 +60,8 @@ output).
 
 - Production domain → set in `astro.config.mjs` (`site`)
 - Contact mailbox → `CONTACT_EMAIL` in `src/i18n/index.ts`
-- Live project URLs → `url` field per card in `src/i18n/{en,ar}.ts`
-  (modal shows its visit button once set)
-- Replace work-card placeholder art with Stage-5 capture imagery
+- Alreaiah screenshot missing → `public/work/alreaiah.jpg` + `image`
+  field in `src/i18n/{en,ar}.ts` (card falls back to placeholder art)
+- Replace `public/work/*.jpg` with higher-res hero captures when
+  available (current sources were downscaled in transit)
 - Wire Lighthouse CI → `public/metrics.json`

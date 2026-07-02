@@ -10,8 +10,8 @@ const { locale } = Astro.props;
 const dict = dicts[locale];
 const w = dict.work;
 
-// bento rhythm: wide / narrow, then mirrored on the second row
-const spans = ['wide', 'narrow', 'narrow', 'wide'];
+// bento rhythm: wide/narrow alternating per row across the six cards
+const spans = ['wide', 'narrow', 'narrow', 'wide', 'wide', 'narrow'];
 ---
 
 <section id="work" class="work container">
@@ -48,7 +48,19 @@ const spans = ['wide', 'narrow', 'narrow', 'wide'];
           </p>
           <div class="card-media" data-card-media>
             <div class="card-media-inner" data-card-media-inner>
-              <CardArt index={i} client={card.client} />
+              {
+                card.image ? (
+                  <img
+                    class="card-shot"
+                    src={card.image}
+                    alt={`${card.client} — ${w.shotAlt}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <CardArt index={i} client={card.client} />
+                )
+              }
             </div>
           </div>
 
@@ -98,7 +110,13 @@ const spans = ['wide', 'narrow', 'narrow', 'wide'];
             </div>
 
             <div class="wm-art" aria-hidden="true">
-              <CardArt index={i} client={card.client} variant="m" />
+              {
+                card.image ? (
+                  <img class="card-shot" src={card.image} alt="" loading="lazy" decoding="async" />
+                ) : (
+                  <CardArt index={i} client={card.client} variant="m" />
+                )
+              }
             </div>
           </dialog>
         </li>
@@ -231,6 +249,14 @@ const spans = ['wide', 'narrow', 'narrow', 'wide'];
   .card-media-inner :global(svg) {
     inline-size: 100%;
     block-size: 100%;
+  }
+
+  /* real project screenshots: fill the frame, keep the page top visible */
+  .card-shot {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: top center;
   }
 
   /* ---------- project modal: a bottom sheet on EVERY viewport ---------- */
