@@ -124,8 +124,8 @@ void main() {
   vec2 clip = (pos / uRes) * 2.0 - 1.0;
   gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
 
-  gl_PointSize = (2.1 * (0.75 + aSeed * 0.5)) * uDpr;
-  vAlpha = (0.48 + aSeed * 0.18 + f * 0.25) * uDamp;
+  gl_PointSize = (2.4 * (0.75 + aSeed * 0.5)) * uDpr;
+  vAlpha = (0.62 + aSeed * 0.2 + f * 0.25) * uDamp;
 }`;
 
 const FIELD_FRAGMENT = /* glsl */ `
@@ -150,7 +150,7 @@ varying float vAlpha;
 void main() {
   vec2 clip = (position / uRes) * 2.0 - 1.0;
   gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
-  gl_PointSize = (3.2 + aSeed * 0.8 + aBoost * 2.6) * uDpr;
+  gl_PointSize = (8.0 + aSeed * 2.0 + aBoost * 5.0) * uDpr;
   vAlpha = 0.9 + aBoost * 0.1;
 }`;
 
@@ -298,23 +298,37 @@ export const mount = (field: HTMLElement) => {
     }
   };
 
-  const rebuild = () => {
+  let lastW = 0;
+  let lastH = 0;
+  const rebuild = (force = false) => {
     const w = field.clientWidth;
     const h = field.clientHeight;
     if (w === 0 || h === 0) return;
+    const dw = Math.abs(w - lastW);
+    const dh = Math.abs(h - lastH);
+    // mobile browsers fire resize when the URL bar collapses mid-scroll;
+    // re-seeding the field then makes every dot jump ("the flick").
+    // No-op when nothing changed; for small height-only shifts, update
+    // the viewport but KEEP the existing field and stars.
+    if (!force && dw < 2 && dh < 2) return;
+    const minor = !force && lastW > 0 && dw < 2 && dh < 180;
+    lastW = w;
+    lastH = h;
     W = w;
     H = h;
     renderer.setSize(w, h);
     fieldProgram.uniforms.uRes.value = [w, h];
     greenProgram.uniforms.uRes.value = [w, h];
     // field text keeps its contrast on small screens: damp the field only
-    fieldProgram.uniforms.uDamp.value = w < 768 ? 0.55 : 1;
+    // (0.42 compensates the raised desktop alpha so mobile looks unchanged)
+    fieldProgram.uniforms.uDamp.value = w < 768 ? 0.42 : 1;
+    if (minor) return;
     if (fieldMesh) fieldMesh.setParent(null);
     fieldMesh = new Mesh(gl, { mode: gl.POINTS, geometry: buildFieldGeometry(gl, w, h), program: fieldProgram });
     fieldMesh.setParent(scene);
     seedStars();
   };
-  rebuild();
+  rebuild(true);
 
   // shooting-star scheduler — driven by frame time so it pauses offscreen
   let nextShoot = FIRST_SHOOT_S;
