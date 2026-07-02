@@ -24,14 +24,17 @@ const TYPE_MS = 14; // per character
 const typeInto = (el: HTMLElement, text: string): Promise<void> => {
   const caret = document.createElement('span');
   caret.className = 't-caret';
+  // type into ONE text node — WebKit does not shape Arabic joins across
+  // text-node boundaries, so per-char nodes render disconnected letters
+  const node = document.createTextNode('');
   el.textContent = '';
-  el.append(caret);
+  el.append(node, caret);
   return new Promise((resolve) => {
     let i = 0;
     const step = () => {
       if (i < text.length) {
-        caret.before(text[i] as string);
         i += 1;
+        node.data = text.slice(0, i);
         setTimeout(step, TYPE_MS);
       } else {
         caret.remove();
