@@ -42,10 +42,8 @@ export const en: Dict = {
     'The digital world is waiting for you',
   ],
   work: {
-    label: '01 — Selected work',
     heading: 'Selected work.',
     line: 'Outcomes over deliverables — each case gets tailored solutions.',
-    cardCta: 'View case',
     modalClose: 'Close',
     modalVisit: 'Visit live site',
     modalContact: 'Start a similar project',
@@ -55,7 +53,6 @@ export const en: Dict = {
         client: 'Najd Hands',
         sector: 'Children’s care',
         year: '2025',
-        line: 'A care network for children — 18 branches, one clear structure, two languages.',
         details:
           'The website of Najd Hands day-care centres, serving children with disabilities across 18 branches: programs, family stories, and clear paths to enrol and reach the team.',
         story: [
@@ -75,7 +72,6 @@ export const en: Dict = {
         client: 'SIPHA',
         sector: 'Healthcare events',
         year: '2025',
-        line: 'The Saudi pharmacy conference’s home — speakers, partners and registration in one place.',
         details:
           'The website of SIPHA, the Saudi International Pharmaceutical Conference: program, speakers, partners and registration — with a live countdown to event day.',
         story: [
@@ -95,7 +91,6 @@ export const en: Dict = {
         client: 'Four Colors',
         sector: 'Print production',
         year: '2026',
-        line: 'A print house’s catalogue moved online — fast on the phones its clients actually use.',
         details:
           'A print house’s catalogue moved online: fast on mid-range phones, easy to browse, and simple for the team to keep up to date.',
         story: [
@@ -115,7 +110,6 @@ export const en: Dict = {
         client: 'Anjal Schools',
         sector: 'Education',
         year: '2026',
-        line: 'A school site parents can navigate — two languages, one structure.',
         details:
           'A school website parents actually navigate: admissions, calendars and contacts in two languages, one consistent structure.',
         story: [
@@ -135,7 +129,6 @@ export const en: Dict = {
         client: 'Alreaiah Almotanahiah',
         sector: 'Care & education group',
         year: '2025',
-        line: 'The group behind the care — schools, centres and their story in one home.',
         details:
           'The website of Alreaiah Almotanahiah, a Saudi group for education, training and comprehensive care: two arms, thirteen facilities across the Kingdom, and their news — in both languages.',
         story: [
@@ -155,7 +148,6 @@ export const en: Dict = {
         client: 'Abdulilah Alrajhi',
         sector: 'Talent portfolio',
         year: '2025',
-        line: 'An actor’s stage online — photos, shows and ads on one dark canvas.',
         details:
           'A portfolio for Abdulilah Alrajhi — actor, model and voice-over artist based in Riyadh: photos, TV shows and ad work, with booking contact one scroll away.',
         story: [
@@ -174,7 +166,6 @@ export const en: Dict = {
     ],
   },
   system: {
-    label: '02 — Process',
     heading: 'One process, four phases.',
     steps: [
       {

@@ -3,7 +3,6 @@ export interface WorkCard {
   client: string;
   sector: string;
   year: string;
-  line: string;
   /** Longer copy shown in the project modal. */
   details: string;
   /** Storytelling paragraphs after the lead (challenge → approach). */
@@ -60,10 +59,8 @@ export interface Dict {
   };
   ticker: string[];
   work: {
-    label: string;
     heading: string;
     line: string;
-    cardCta: string;
     modalClose: string;
     modalVisit: string;
     /** Secondary modal CTA — jumps to the contact section. */
@@ -73,7 +70,6 @@ export interface Dict {
     cards: WorkCard[];
   };
   system: {
-    label: string;
     heading: string;
     steps: SystemStep[];
   };

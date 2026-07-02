@@ -24,6 +24,11 @@ own claims: visible grid, monospaced metrics, a green that means
 natively per guideline §5, `<html lang dir>` set per tree, all motion
 direction-aware (`src/scripts/env.ts → dirSign`).
 
+**Defaults (owner decisions):** the root `/` sends everyone to `/ar/`
+(`src/pages/index.astro`; Astro's auto-redirect is disabled in
+`astro.config.mjs`), and light is the theme for first-time visitors —
+dark applies only via the toggle (persisted, applied pre-paint).
+
 ## Commands
 
 | Command            | Action                                          |
@@ -44,12 +49,12 @@ direction-aware (`src/scripts/env.ts → dirSign`).
   hand-edited. The hero terminal renders an em-dash for every `null` and
   only shows a pass-dot when a value meets target.
 
-## Measured (local mobile-emulated Lighthouse, 2026-06-14)
+## Measured (local mobile-emulated Lighthouse, 2026-07-02)
 
-| Page  | Perf | A11y | BP  | SEO | CLS   |
-| ----- | ---- | ---- | --- | --- | ----- |
-| `/en/`| 99   | 100  | 100 | 100 | 0.001 |
-| `/ar/`| 96   | 100  | 100 | 100 | 0.001 |
+| Page  | Perf | A11y | BP  | SEO | CLS   | LCP  |
+| ----- | ---- | ---- | --- | --- | ----- | ---- |
+| `/en/`| 99   | 100  | 100 | 100 | 0.001 | 1.9s |
+| `/ar/`| 96   | 100  | 100 | 100 | 0.001 | 2.7s |
 
 axe-core: 0 violations on both trees, including with a project modal open.
 The hero terminal reads these from `public/metrics.json` (worst of the two
@@ -59,9 +64,7 @@ output).
 ## Open items (intake)
 
 - Production domain → set in `astro.config.mjs` (`site`)
-- Contact mailbox → `CONTACT_EMAIL` in `src/i18n/index.ts`
-- Alreaiah screenshot missing → `public/work/alreaiah.jpg` + `image`
-  field in `src/i18n/{en,ar}.ts` (card falls back to placeholder art)
 - Replace `public/work/*.jpg` with higher-res hero captures when
-  available (current sources were downscaled in transit)
+  available (current sources were downscaled in transit; raise the
+  `SHOT_W` caps in `Work.astro` accordingly)
 - Wire Lighthouse CI → `public/metrics.json`
