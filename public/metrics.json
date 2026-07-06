@@ -2,13 +2,13 @@
   "_source": "Lighthouse 12, mobile emulation, production build of this site — worst score of /en/ and /ar/. Never hand-edit the Lighthouse fields; re-run and commit.",
   "_todo": "Wire Lighthouse CI: run `lhci autorun --collect.url=<prod>/en/ --collect.url=<prod>/ar/ --collect.settings.preset=mobile` after each production deploy and commit the median summary here.",
   "_satisfactionNote": "satisfaction is the studio's stated commitment to its partners, not a Lighthouse output — set by the owner.",
-  "updatedAt": "2026-07-02",
+  "updatedAt": "2026-07-06",
   "source": "lighthouse@12 mobile emulation, local production build",
-  "performance": 96,
+  "performance": 95,
   "accessibility": 100,
   "bestPractices": 100,
   "seo": 100,
-  "lcpMs": 2700,
+  "lcpMs": 2500,
   "cls": 0.001,
   "satisfaction": 100
 }

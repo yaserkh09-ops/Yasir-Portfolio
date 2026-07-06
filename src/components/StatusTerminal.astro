@@ -9,21 +9,18 @@ const { locale } = Astro.props;
 const d = dicts[locale].hero;
 
 /**
- * Rows map to /public/metrics.json (see the notes in that file — the two
- * Lighthouse rows are measured, satisfaction is the studio's stated
- * commitment). Server-rendered values are honest em-dashes;
- * scripts/terminal.ts fills real values only when they exist. Targets live
- * in terminal.ts: performance >= 95, accessibility = 100, satisfaction = 100.
+ * Rows come from the locale dict (fully Arabic on /ar/) and map to
+ * /public/metrics.json (see the notes in that file — the two Lighthouse
+ * rows are measured, satisfaction is the studio's stated commitment).
+ * Server-rendered values are honest em-dashes; scripts/terminal.ts fills
+ * real values only when they exist. Targets live in terminal.ts:
+ * performance >= 95, accessibility = 100, satisfaction = 100.
  */
-const rows = [
-  { key: 'PERFORMANCE', metric: 'performance' },
-  { key: 'ACCESSIBILITY', metric: 'accessibility' },
-  { key: 'PARTNER SATISFACTION', metric: 'satisfaction' },
-];
+const rows = d.terminalRows;
 ---
 
 <aside class="terminal glass" aria-label={d.terminalAria} data-terminal data-not-measured={d.notMeasured}>
-  <!-- title + subtitle are locale-aware copy (Arabic on /ar/); row keys stay Latin mono -->
+  <!-- all card copy is locale-aware (fully Arabic on /ar/); values stay LTR islands -->
   <p class="t-title ui-label">{d.terminalTitle}</p>
   <div class="t-body" data-terminal-body>
     <p class="t-cmd ui-label">
@@ -32,7 +29,7 @@ const rows = [
     <ul role="list">
       {
         rows.map((r) => (
-          <li class="t-row mono-label" data-t-row>
+          <li class="t-row ui-label" data-t-row>
             <span class="t-key" data-t-key>{r.key}</span>
             <span class="t-leader" aria-hidden="true" />
             <span class="t-val ltr-island" data-t-val={r.metric}>
@@ -75,6 +72,16 @@ const rows = [
     font-size: 0.9375rem;
     font-weight: 400;
   }
+  /* AR rows: same preloaded-face pinning (400) — never swap-shifts */
+  :global(:root[lang='ar']) .t-row {
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+  /* values are Latin digits — keep them mono even between Arabic labels */
+  :global(:root[lang='ar']) .t-val {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
 
   .t-body {
     display: grid;
@@ -104,7 +111,7 @@ const rows = [
   }
 
   .t-val {
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: tabular-nums slashed-zero;
   }
 
   /* pass-dot: green, non-text (3.11:1 / 3.23:1 vs worst-case glass — OK) */

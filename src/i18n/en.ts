@@ -9,7 +9,7 @@ export const en: Dict = {
   meta: {
     title: 'YASIR_ — Independent web design & development partner',
     description:
-      'Bilingual Arabic/English websites and brand systems for Saudi organizations — engineered to verifiable standards, written to convert, delivered fast.',
+      'Your partner for bilingual Arabic/English websites and brand systems — from a strong design system to the website you dream of, built fast and built right.',
   },
   skipLink: 'Skip to content',
   nav: {
@@ -31,6 +31,11 @@ export const en: Dict = {
     terminalAria: 'Live build metrics',
     terminalTitle: 'Your trusted partner',
     terminalCmd: 'Standards I never negotiate',
+    terminalRows: [
+      { key: 'Performance', metric: 'performance' },
+      { key: 'Accessibility', metric: 'accessibility' },
+      { key: 'Partner satisfaction', metric: 'satisfaction' },
+    ],
     notMeasured: 'not yet measured',
     metricsNote: 'Let’s get 8 billion people to see you!',
   },
@@ -170,7 +175,7 @@ export const en: Dict = {
     steps: [
       {
         label: '01 Discover',
-        copy: 'Your goals, your users, your constraints — written down and agreed before anything is drawn.',
+        copy: 'I start by listening: your goals, your users, your constraints — written down and agreed before anything is drawn.',
       },
       {
         label: '02 Design',
@@ -199,25 +204,24 @@ export const en: Dict = {
         value: 44,
         decimals: 0,
         suffix: 'px',
-        label: 'Smallest interactive target on this site',
+        label: 'Every button sized for real thumbs — nothing fiddly',
       },
       {
         value: 100,
         decimals: 0,
         suffix: '%',
-        label: 'Text shipped as live HTML — selectable, indexable',
+        label: 'Real, living text you can select and search — never an image',
       },
     ],
   },
   cta: {
     label: 'CONTACT ME',
-    heading: 'Tell me what needs to work.',
+    heading: 'Tell me about your dream project.',
     line: 'One reply, usually within a day — in English or Arabic, whichever you prefer.',
     button: 'Get in Touch',
     emailLabel: 'Or write directly:',
   },
   footer: {
-    a11yNote: 'Motion respects your system preferences.',
     rights: '© 2026 — All work shown with permission.',
   },
 };

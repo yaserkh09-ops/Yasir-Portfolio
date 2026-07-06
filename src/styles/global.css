@@ -79,12 +79,23 @@ i {
   font-size: var(--fs-h2);
   line-height: var(--lh-h2);
   font-weight: var(--fw-h2);
+  letter-spacing: var(--track-h2, 0);
 }
 
 .h3 {
   font-size: var(--fs-h3);
   line-height: var(--lh-h3);
   font-weight: 500;
+}
+
+/* editorial wrapping: no orphans in paragraphs, balanced headings.
+   Wrapping only — never justification, so the Arabic rules hold. */
+p {
+  text-wrap: pretty;
+}
+.h2,
+.h3 {
+  text-wrap: balance;
 }
 
 .body-l {
@@ -147,6 +158,13 @@ i {
 main {
   position: relative;
   z-index: var(--z-content);
+}
+
+/* anchor targets clear the fixed glass nav (56px pill + 12px offset + air) */
+#work,
+#process,
+#contact {
+  scroll-margin-block-start: 88px;
 }
 
 /* ---------- a11y ---------- */
@@ -274,6 +292,7 @@ main {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  white-space: nowrap; /* a button label never breaks into lines */
   transition: transform var(--t-fast) var(--ease);
 }
 :root[lang='ar'] .btn {

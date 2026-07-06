@@ -70,23 +70,32 @@ const initWork = () => {
     const inner = card.querySelector<HTMLElement>('[data-card-media-inner]');
     if (!media || !inner) return;
 
-    // reveal from inline-start, direction-aware
+    // reveal from inline-start, direction-aware. immediateRender:false —
+    // the hidden state applies only when the trigger arms, so full renders
+    // (print, snapshots, ScrollTrigger hiccups) never show gutted cards
     const from = dirSign === 1 ? 'inset(0% 100% 0% 0%)' : 'inset(0% 0% 0% 100%)';
-    gsap.set(media, { clipPath: from });
-    gsap.set(inner, { scale: 1.04 });
-
-    gsap.to(media, {
-      clipPath: 'inset(0% 0% 0% 0%)',
-      duration: 1,
-      ease: EASE,
-      scrollTrigger: { trigger: card, start: 'top 78%', once: true },
-    });
-    gsap.to(inner, {
-      scale: 1,
-      duration: 1.2,
-      ease: EASE,
-      scrollTrigger: { trigger: card, start: 'top 78%', once: true },
-    });
+    gsap.fromTo(
+      media,
+      { clipPath: from },
+      {
+        clipPath: 'inset(0% 0% 0% 0%)',
+        duration: 1,
+        ease: EASE,
+        immediateRender: false,
+        scrollTrigger: { trigger: card, start: 'top 78%', once: true },
+      },
+    );
+    gsap.fromTo(
+      inner,
+      { scale: 1.04 },
+      {
+        scale: 1,
+        duration: 1.2,
+        ease: EASE,
+        immediateRender: false,
+        scrollTrigger: { trigger: card, start: 'top 78%', once: true },
+      },
+    );
   });
 };
 
@@ -122,13 +131,16 @@ const initCounters = () => {
     const decimals = parseInt(el.dataset.decimals ?? '0', 10);
     const suffix = el.dataset.suffix ?? '';
     const state = { v: 0 };
-    el.textContent = (0).toFixed(decimals) + suffix;
-
+    // server-rendered final values stay visible at rest; zeroing happens
+    // only when the count-up actually starts (never a "0px" static page)
     gsap.to(state, {
       v: value,
       duration: 1.4,
       ease: EASE,
       scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+      onStart() {
+        el.textContent = (0).toFixed(decimals) + suffix;
+      },
       onUpdate() {
         el.textContent = state.v.toFixed(decimals) + suffix;
       },
@@ -141,16 +153,25 @@ const initMark = () => {
   const mark = document.querySelector<HTMLElement>('[data-mark]');
   if (!mark) return;
   const from = dirSign === 1 ? 'inset(0% 100% 0% 0%)' : 'inset(0% 0% 0% 100%)';
-  gsap.set(mark, { clipPath: from });
-
   const underscore = mark.querySelector<HTMLElement>('[data-mark-underscore]');
-  if (underscore) gsap.set(underscore, { scaleX: 0 });
 
+  // hidden states arm with the trigger (immediateRender:false) — a full
+  // page render at rest always shows the complete mark
   const tl = gsap.timeline({
     scrollTrigger: { trigger: mark, start: 'top 88%', once: true },
   });
-  tl.to(mark, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.8, ease: EASE });
-  if (underscore) tl.to(underscore, { scaleX: 1, duration: 0.2, ease: EASE }, '-=0.1');
+  tl.fromTo(
+    mark,
+    { clipPath: from },
+    { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.8, ease: EASE, immediateRender: false },
+  );
+  if (underscore)
+    tl.fromTo(
+      underscore,
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.2, ease: EASE, immediateRender: false },
+      '-=0.1',
+    );
 };
 
 /* ---------- magnetic CTA (<=6px, pointer:fine only) ---------- */

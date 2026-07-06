@@ -54,6 +54,8 @@ export interface Dict {
     terminalAria: string;
     terminalTitle: string;
     terminalCmd: string;
+    /** Metric rows — keys are locale-authored; metric ids map to metrics.json. */
+    terminalRows: { key: string; metric: string }[];
     notMeasured: string;
     metricsNote: string;
   };
@@ -85,7 +87,6 @@ export interface Dict {
     emailLabel: string;
   };
   footer: {
-    a11yNote: string;
     rights: string;
   };
 }

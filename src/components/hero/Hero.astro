@@ -101,6 +101,13 @@ const d = dicts[locale].hero;
 
   .hero-eyebrow {
     color: var(--c-accent);
+    /* kicker locks to its headline: tighter than the grid's uniform gap */
+    margin-block-end: -12px;
+    text-wrap: balance;
+  }
+  /* AR: the LTR eyebrow aligns to the right edge with the RTL composition */
+  :global(:root[lang='ar']) .hero-eyebrow {
+    text-align: end;
   }
 
   .h1-line {
@@ -128,6 +135,15 @@ const d = dicts[locale].hero;
     gap: 20px;
     padding: 14px;
     color: var(--c-text); /* glass text rule */
+  }
+  /* narrow screens: the note reflows below the intact button */
+  @media (max-width: 479px) {
+    .hero-cta {
+      flex-wrap: wrap;
+    }
+    .hero-cta-note {
+      padding-inline-end: 0;
+    }
   }
 
   .hero-cta-note {

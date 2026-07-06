@@ -49,12 +49,12 @@ dark applies only via the toggle (persisted, applied pre-paint).
   hand-edited. The hero terminal renders an em-dash for every `null` and
   only shows a pass-dot when a value meets target.
 
-## Measured (local mobile-emulated Lighthouse, 2026-07-02)
+## Measured (local mobile-emulated Lighthouse, 2026-07-06)
 
 | Page  | Perf | A11y | BP  | SEO | CLS   | LCP  |
 | ----- | ---- | ---- | --- | --- | ----- | ---- |
-| `/en/`| 99   | 100  | 100 | 100 | 0.001 | 1.9s |
-| `/ar/`| 96   | 100  | 100 | 100 | 0.001 | 2.7s |
+| `/en/`| 95   | 100  | 100 | 100 | 0.001 | 2.2s |
+| `/ar/`| 96   | 100  | 100 | 100 | 0.001 | 2.5s |
 
 axe-core: 0 violations on both trees, including with a project modal open.
 The hero terminal reads these from `public/metrics.json` (worst of the two
