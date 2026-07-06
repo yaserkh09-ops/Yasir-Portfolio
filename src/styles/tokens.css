@@ -90,7 +90,7 @@
 
   /* Latin scale (§3.2); AR overrides below (§3.3 — own logic, not ratios) */
   --fs-h1: clamp(2.5rem, 1.05rem + 4.5vw, 5rem); /* 56 base → ~80 ≥1280px */
-  --lh-h1: 1.14;
+  --lh-h1: 1.08;
   --fw-h1: 600;
   --fs-h2: clamp(1.75rem, 1.45rem + 1.25vw, 2.25rem); /* 36/44 */
   --lh-h2: 1.22;
@@ -104,7 +104,8 @@
   --fs-label: 0.8125rem; /* 13/20 mono labels */
   --lh-label: 1.538;
   --fs-credit: 0.75rem; /* 12/16 footer credit, §1.5 */
-  --track-h1: -0.01em;
+  --track-h1: -0.022em;
+  --track-h2: -0.015em;
   --track-label: 0.06em;
   --track-wordmark: 0.16em;
 
@@ -137,7 +138,9 @@
 
 /* Arabic tree — sizes are set values per §3.3, never converted Latin */
 :root[lang='ar'] {
-  --font-sans: 'IBM Plex Sans Arabic', 'plex-sans-fb', system-ui, sans-serif;
+  /* Plex Sans after the Arabic face: the woff2s are unicode-range split,
+     so Latin islands inside Arabic copy stay Plex — never Arial */
+  --font-sans: 'IBM Plex Sans Arabic', 'IBM Plex Sans', 'plex-sans-fb', system-ui, sans-serif;
   --fs-h1: clamp(2.25rem, 1rem + 4vw, 4.5rem); /* 50 base → ~72 ≥1280px */
   --lh-h1: 1.36;
   --fw-h1: 700; /* SemiBold reads underweight in AR display */
@@ -151,6 +154,7 @@
   --lh-body: 1.765;
   --lh-label: 1.692; /* 13/22 */
   --track-h1: 0; /* never letter-space Arabic */
+  --track-h2: 0;
 }
 
 /* dark mode — explicit toggle */

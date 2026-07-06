@@ -278,11 +278,22 @@ const shotStyle = (path: string | null) => {
   .card-meta {
     color: var(--c-text-3);
   }
+  /* AR: sectors are Arabic — sibling treatment, never letter-spaced,
+     natural RTL reading with the client name as a Latin island */
+  :global(:root[lang='ar']) .card-meta,
+  :global(:root[lang='ar']) .wm-meta {
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 500;
+    direction: inherit;
+  }
 
   .card-media {
     margin-block-start: 8px;
     block-size: clamp(220px, 26vw, 340px);
     overflow: hidden;
+    border: var(--hairline) solid var(--c-line); /* defines the plate edge */
     border-radius: var(--radius);
     /* dotted paper behind the framed captures — brand texture */
     background-image: radial-gradient(

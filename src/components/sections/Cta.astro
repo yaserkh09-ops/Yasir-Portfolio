@@ -88,7 +88,9 @@ const c = dict.cta;
     margin-block-start: clamp(48px, 8vh, 96px);
     padding-inline: var(--gutter);
     font-size: clamp(4rem, 17vw, 15rem);
-    line-height: 1.1;
+    line-height: 1;
+    /* +16% tracking is a small-size lockup rule — display sizes need half */
+    letter-spacing: 0.08em;
     /* JS clips for the draw-in; default fully visible */
   }
   /* outranks the global AR wordmark size (1.08em optical rule still applied) */

@@ -123,8 +123,9 @@ const links = [
   }
 
   @media (max-width: 767px) {
-    .nav-links {
-      display: none; /* anchors only — all content remains reachable by scroll */
+    /* keep the conversion link — Contact fits beside the wordmark at 390px */
+    .nav-links li:not(:last-child) {
+      display: none;
     }
   }
 </style>
