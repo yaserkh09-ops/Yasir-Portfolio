@@ -53,6 +53,10 @@ export const en: Dict = {
     modalVisit: 'Visit live site',
     modalContact: 'Start a similar project',
     shotAlt: 'homepage screenshot',
+    scopeLabel: 'The work package',
+    processLabel: 'The process',
+    toolsLabel: 'Platform & tools',
+    takeawayLabel: 'For your project',
     cards: [
       {
         client: 'Najd Hands',
@@ -60,15 +64,19 @@ export const en: Dict = {
         year: '2025',
         details:
           'The website of Najd Hands day-care centres, serving children with disabilities across 18 branches: programs, family stories, and clear paths to enrol and reach the team.',
-        story: [
-          'Eighteen branches, dozens of programs, and families who arrive anxious and short on time. The site leads with warmth, then answers the three questions every parent has — what do you treat, where are you, and how do we start.',
-          'Programs, family stories and news each got a clear home, and every page ends with one calm next step: book a first visit.',
+        scope: [
+          'Brand identity — colors, structure and message',
+          'Brainstorming and prototyping sessions',
+          'Copywriting, page by page',
+          'Design and the full website build',
         ],
-        bullets: [
-          'Specialised programs presented plainly',
-          '18 branches under one clear structure',
-          'Enrolment and contact one tap away',
+        process: [
+          'Najd Hands was the complete journey, started from a blank page: brainstorming sessions first, then a brand identity — its colors, its structure, its message — then prototypes to test how an anxious, short-on-time parent would actually move through the site.',
+          'With the foundations agreed, I wrote the copy, designed the pages and developed the whole website — one continuous process, one pair of hands, from first sketch to a launched home for 18 branches.',
         ],
+        tools: ['Brand identity', 'Prototyping', 'Copywriting', 'Full web build'],
+        takeaway:
+          'Starting from zero? This is the full package — brand, words and website in one continuous process.',
         url: 'https://najdhands.netlify.app',
         image: '/work/najdhands.jpg',
         gallery: ['/work/najdhands-2.jpg', '/work/najdhands-3.jpg'],
@@ -79,15 +87,19 @@ export const en: Dict = {
         year: '2025',
         details:
           'The website of SIPHA, the Saudi International Pharmaceutical Conference: program, speakers, partners and registration — with a live countdown to event day.',
-        story: [
-          'A conference site lives or dies in the weeks before event day. SIPHA’s leads with what matters: the countdown, the venue, and a register button that is never more than one glance away.',
-          'Speakers, scientific themes, partners and sponsors each get their moment — structured to be updated fast as the program grows.',
+        scope: [
+          'Ongoing site management on Wix',
+          'A focused redesign session',
+          'Email campaigns to the attendee list',
+          'Live updates through the conference days',
         ],
-        bullets: [
-          'Registration and fees one tap away',
-          'Speakers, partners and sponsors showcased',
-          'A live countdown that builds momentum',
+        process: [
+          'SIPHA was a management engagement: the conference already had a website on Wix — what it needed was a steady hand. I began with a redesign session that sharpened what attendees use most: the countdown, the program, and a register button never more than a glance away.',
+          'From there to event day I ran the email campaigns and kept the site current through the conference itself — schedule changes going live in the minutes that matter, not the morning after.',
         ],
+        tools: ['Wix', 'Email campaigns', 'Content management'],
+        takeaway:
+          'Running an event? This is the package that keeps a conference site alive — managed, current, and talking to its audience.',
         url: 'https://www.sipha-sps.com',
         image: '/work/sipha.jpg',
         gallery: ['/work/sipha-2.jpg', '/work/sipha-3.jpg'],
@@ -98,15 +110,19 @@ export const en: Dict = {
         year: '2026',
         details:
           'A print house’s catalogue moved online: fast on mid-range phones, easy to browse, and simple for the team to keep up to date.',
-        story: [
-          'Thirty years of print experience deserved better than a phone number. The site turns the press’s catalogue into browsable departments — offset, digital, design, advertising — each one tap deep.',
-          'Bold colour keeps the craft visible; a contact form asks only what the press actually needs to quote a job.',
+        scope: [
+          'Client brand kit translated to the web',
+          'High-end Webflow design and build',
+          'A browsable catalogue structure',
+          'Self-service updates for the in-house team',
         ],
-        bullets: [
-          'Catalogue browsable on mid-range phones',
-          'Simple updates for the in-house team',
-          'Fast loading on real-world connections',
+        process: [
+          'Four Colors handed me a ready brand kit — thirty years of print identity — and asked for a website that lives up to it. My job was translation: from ink on paper to a high-end build on Webflow.',
+          'The catalogue became browsable departments — offset, digital, design, advertising — and because it lives on Webflow, the in-house team updates it themselves, no developer needed.',
         ],
+        tools: ['Webflow', 'Client brand kit'],
+        takeaway:
+          'Already have a brand kit? This is how it becomes a high-end website that feels unmistakably yours.',
         url: 'https://www.fourcolors.sa',
         image: '/work/fourcolors.jpg',
         gallery: ['/work/fourcolors-2.jpg', '/work/fourcolors-3.jpg'],
@@ -117,15 +133,19 @@ export const en: Dict = {
         year: '2026',
         details:
           'A school website parents actually navigate: admissions, calendars and contacts in two languages, one consistent structure.',
-        story: [
-          'Parents don’t browse school sites for fun — they come to decide. The structure mirrors their questions: stages, facilities, teachers and how to reach the school.',
-          'Playful illustration keeps it warm; a strict content structure keeps it fast to scan in either language.',
+        scope: [
+          'A full brand kit grown from a single logo',
+          'Website design and build on Webflow',
+          'Ongoing maintenance after launch',
+          'Ad campaigns that bring parents in',
         ],
-        bullets: [
-          'Admissions, calendars and contacts — two languages',
-          'One consistent structure parents learn once',
-          'Accessible navigation for every visitor',
+        process: [
+          'Anjal arrived with exactly one asset: a logo. I grew it into a full brand kit — palette, type, illustration style — so the school finally had a visual language, not just a mark.',
+          'On that foundation I designed and built the website on Webflow, and the work didn’t stop at launch: I maintain the site and run the ad campaigns that bring parents to pages ready to answer them.',
         ],
+        tools: ['Webflow', 'Brand kit', 'Ad campaigns'],
+        takeaway:
+          'Only have a logo? A whole brand — and the website to carry it — can grow from there.',
         url: 'https://anjal-schools.webflow.io',
         image: '/work/anjal.jpg',
         gallery: ['/work/anjal-2.jpg', '/work/anjal-3.jpg'],
@@ -136,15 +156,18 @@ export const en: Dict = {
         year: '2025',
         details:
           'The website of Alreaiah Almotanahiah, a Saudi group for education, training and comprehensive care: two arms, thirteen facilities across the Kingdom, and their news — in both languages.',
-        story: [
-          'A holding group needs a site that explains the whole before the parts. Alreaiah’s opens with one line of purpose, then hands each arm — the day-care centres and the schools — its own doorway.',
-          'Numbers, news and careers complete the picture for the three audiences that matter: families, partners and talent.',
+        scope: [
+          'Client brand kit translated to the web',
+          'High-end bilingual Webflow build',
+          'A structure that explains two arms and 13 facilities',
         ],
-        bullets: [
-          'Two arms, one clear structure',
-          'Facilities, numbers and news in one place',
-          'Arabic and English, written natively',
+        process: [
+          'Alreaiah brought a ready brand kit and a complex story: a holding group with two arms — day-care centres and schools — and thirteen facilities across the Kingdom.',
+          'I turned the kit into a high-end Webflow build that explains the whole before the parts, in Arabic and English written natively — so families, partners and talent each find their doorway.',
         ],
+        tools: ['Webflow', 'Client brand kit', 'Bilingual build'],
+        takeaway:
+          'A brand with many parts? Structure is the service — one site that makes the whole group legible.',
         url: 'https://alreaiah.netlify.app',
         image: '/work/alreaiah.jpg',
         gallery: ['/work/alreaiah-2.jpg', '/work/alreaiah-3.jpg'],
@@ -155,15 +178,19 @@ export const en: Dict = {
         year: '2025',
         details:
           'A portfolio for Abdulilah Alrajhi — actor, model and voice-over artist based in Riyadh: photos, TV shows and ad work, with booking contact one scroll away.',
-        story: [
-          'Casting directors decide in seconds. The site opens with the face, the three roles — actor, model, voice-over — and then the work itself, organised by format.',
-          'A dark stage, minimal words, and a booking form waiting at the end of the scroll.',
+        scope: [
+          'Fully custom design and build',
+          'Interactive parallax scroll animations',
+          'Database-backed content',
+          'A tailored dashboard for managing every asset',
         ],
-        bullets: [
-          'Photos, TV shows and ads — organised',
-          'A dark stage that lets the work lead',
-          'Booking contact one scroll away',
+        process: [
+          'A talent portfolio has one job: impress in seconds. So this one went beyond templates — a fully custom build with interactive, parallax scroll animation that gives the page itself a sense of stagecraft.',
+          'Behind the curtain it runs on a database with a tailored dashboard: photos, TV work and ads are added or swapped from one panel, without ever touching the code.',
         ],
+        tools: ['Custom code', 'Parallax animation', 'Database + dashboard'],
+        takeaway:
+          'Need something templates can’t do? Custom code opens every door — and a dashboard keeps it yours to run.',
         url: 'https://abdulilahalrajhi.com',
         image: '/work/abdulilah.jpg',
         gallery: ['/work/abdulilah-2.jpg', '/work/abdulilah-3.jpg'],

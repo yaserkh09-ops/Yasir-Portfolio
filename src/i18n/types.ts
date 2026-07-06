@@ -3,12 +3,16 @@ export interface WorkCard {
   client: string;
   sector: string;
   year: string;
-  /** Longer copy shown in the project modal. */
+  /** Lead copy: what the site is and the service it provides. */
   details: string;
-  /** Storytelling paragraphs after the lead (challenge → approach). */
-  story: string[];
-  /** Checkmark bullet points in the project modal (Stripe-style). */
-  bullets: string[];
+  /** The work package — what was actually done (checkmark list). */
+  scope: string[];
+  /** Process paragraphs: why it was built, how, and how it's maintained. */
+  process: string[];
+  /** Platform & tools chips (Wix, Webflow, custom code, …). */
+  tools: string[];
+  /** One line telling the reader how this maps to their own project. */
+  takeaway: string;
   /** Live project URL — modal renders its visit button only when set. */
   url: string | null;
   /** Screenshot under /public — placeholder art renders while null. */
@@ -69,6 +73,11 @@ export interface Dict {
     modalContact: string;
     /** Suffix for screenshot alt text: "<client> — <shotAlt>". */
     shotAlt: string;
+    /** Modal section labels. */
+    scopeLabel: string;
+    processLabel: string;
+    toolsLabel: string;
+    takeawayLabel: string;
     cards: WorkCard[];
   };
   system: {
