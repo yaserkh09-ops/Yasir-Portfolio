@@ -26,7 +26,8 @@ const SHOT_W: Record<string, number> = {
 const shotStyle = (path: string | null) => {
   if (!path) return undefined;
   const key = Object.keys(SHOT_W).find((k) => path.includes(k));
-  return key ? `--shotw: ${Math.round(SHOT_W[key]! * 1.3)}px` : undefined;
+  // never upscale past native — soft captures read as bad quality
+  return key ? `--shotw: ${SHOT_W[key]}px` : undefined;
 };
 ---
 
@@ -81,7 +82,16 @@ const shotStyle = (path: string | null) => {
             </div>
           </div>
 
-          <dialog class="work-modal glass" data-work-modal aria-labelledby={`wm-title-${i}`} tabindex="-1">
+          {/* data-lenis-prevent: the smooth-scroll library must not hijack
+              wheel events over the sheet — without it the modal cannot be
+              scrolled with a mouse on desktop */}
+          <dialog
+            class="work-modal glass"
+            data-work-modal
+            data-lenis-prevent
+            aria-labelledby={`wm-title-${i}`}
+            tabindex="-1"
+          >
             <button type="button" class="wm-close" data-modal-close aria-label={w.modalClose}>
               <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.5" />
@@ -95,36 +105,50 @@ const shotStyle = (path: string | null) => {
                 </p>
                 <h3 class="wm-title h3" id={`wm-title-${i}`}>{card.client}</h3>
                 <p class="wm-details">{card.details}</p>
-                {card.story.map((s) => <p class="wm-details wm-story">{s}</p>)}
-                <div class="wm-ctas">
-                  {
-                    card.url && (
-                      <a class="btn" href={card.url} target="_blank" rel="noopener">
-                        {w.modalVisit}
-                      </a>
-                    )
-                  }
-                  <a
-                    class:list={['btn', { 'btn-ghost': !!card.url }]}
-                    href="#contact"
-                    data-modal-contact
-                  >
-                    {w.modalContact}
-                  </a>
-                </div>
+                <p class="wm-label ui-label">{w.processLabel}</p>
+                {card.process.map((s) => <p class="wm-details wm-story">{s}</p>)}
+                <p class="wm-takeaway">
+                  <span class="wm-label ui-label">{w.takeawayLabel}</span>
+                  {card.takeaway}
+                </p>
               </div>
-              <ul class="wm-bullets" role="list">
-                {
-                  card.bullets.map((b) => (
-                    <li class="wm-bullet">
-                      <svg class="wm-check" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-                        <path d="M2.5 7.5L5.5 10.5L11.5 3.5" fill="none" stroke="currentColor" stroke-width="2" />
-                      </svg>
-                      {b}
-                    </li>
-                  ))
-                }
-              </ul>
+
+              <aside class="wm-side">
+                <p class="wm-label ui-label">{w.scopeLabel}</p>
+                <ul class="wm-bullets" role="list">
+                  {
+                    card.scope.map((b) => (
+                      <li class="wm-bullet">
+                        <svg class="wm-check" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                          <path d="M2.5 7.5L5.5 10.5L11.5 3.5" fill="none" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        {b}
+                      </li>
+                    ))
+                  }
+                </ul>
+                <p class="wm-label ui-label">{w.toolsLabel}</p>
+                <ul class="wm-tools" role="list">
+                  {card.tools.map((t) => <li class="wm-tool ui-label">{t}</li>)}
+                </ul>
+              </aside>
+            </div>
+
+            <div class="wm-ctas">
+              {
+                card.url && (
+                  <a class="btn" href={card.url} target="_blank" rel="noopener">
+                    {w.modalVisit}
+                  </a>
+                )
+              }
+              <a
+                class:list={['btn', { 'btn-ghost': !!card.url }]}
+                href="#contact"
+                data-modal-contact
+              >
+                {w.modalContact}
+              </a>
             </div>
 
             <div class="wm-art" aria-hidden="true">
@@ -417,11 +441,55 @@ const shotStyle = (path: string | null) => {
     max-inline-size: 52ch;
   }
 
+  /* section labels inside the sheet — full ink/paper on glass */
+  .wm-label {
+    color: inherit;
+    margin-block-start: 10px;
+    padding-block-end: 6px;
+    border-block-end: var(--hairline) solid color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  /* the reader's line: how this maps to their own project */
+  .wm-takeaway {
+    max-inline-size: 52ch;
+    margin-block-start: 10px;
+    padding-inline-start: 14px;
+    border-inline-start: var(--stroke-w) solid var(--c-accent); /* the Stroke, non-text */
+    font-weight: 500;
+    display: grid;
+    gap: 6px;
+  }
+  .wm-takeaway .wm-label {
+    margin-block-start: 0;
+    padding-block-end: 0;
+    border-block-end: 0;
+  }
+
+  .wm-side {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+
+  .wm-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .wm-tool {
+    border: var(--hairline) solid color-mix(in srgb, currentColor 30%, transparent);
+    border-radius: var(--radius);
+    padding: 6px 12px;
+    direction: ltr; /* platform names are Latin marks in both trees */
+  }
+  :global(:root[lang='ar']) .wm-tool {
+    direction: rtl; /* Arabic chips read naturally; Latin ones are islands */
+  }
+
   .wm-ctas {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-block-start: 8px;
   }
 
   /* secondary CTA: quiet outline sibling of .btn */
@@ -437,7 +505,7 @@ const shotStyle = (path: string | null) => {
   .wm-bullets {
     display: grid;
     gap: 12px;
-    align-content: center;
+    align-content: start;
   }
 
   .wm-bullet {
