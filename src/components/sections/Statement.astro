@@ -52,10 +52,13 @@ const speeds = [0.5, -0.35, 0.3, -0.5, 0.4];
     font-weight: 600;
     text-wrap: balance;
   }
-  /* AR display: Bold, and the taller line-height Arabic needs (§3.3) */
+  /* AR display: Bold, taller line-height (§3.3) — and re-assert centering:
+     the global ':root[lang=ar] p { text-align: start }' body rule outranks
+     the scoped class, which pushed the message to the right edge */
   :global(:root[lang='ar']) .statement-msg {
     font-weight: 700;
     line-height: 1.65;
+    text-align: center;
   }
 
   /* mobile / narrow: a calm wrapped row under the message */
@@ -86,25 +89,27 @@ const speeds = [0.5, -0.35, 0.3, -0.5, 0.4];
       position: absolute;
       white-space: nowrap;
     }
+    /* orbit close to the message: top/bottom chips pull well inward;
+       the two mid-height chips stay outside the message's column */
     .statement-chip:nth-child(1) {
-      inset-block-start: 8%;
-      inset-inline-start: 7%;
+      inset-block-start: 16%;
+      inset-inline-start: 19%;
     }
     .statement-chip:nth-child(2) {
-      inset-block-start: 17%;
-      inset-inline-end: 6%;
+      inset-block-start: 24%;
+      inset-inline-end: 17%;
     }
     .statement-chip:nth-child(3) {
-      inset-block-start: 46%;
-      inset-inline-start: 4%;
+      inset-block-start: 47%;
+      inset-inline-start: 7%;
     }
     .statement-chip:nth-child(4) {
-      inset-block-end: 25%;
-      inset-inline-end: 8%;
+      inset-block-end: 27%;
+      inset-inline-end: 14%;
     }
     .statement-chip:nth-child(5) {
-      inset-block-end: 8%;
-      inset-inline-start: 15%;
+      inset-block-end: 13%;
+      inset-inline-start: 24%;
     }
   }
 </style>
