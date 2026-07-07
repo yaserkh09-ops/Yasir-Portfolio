@@ -14,16 +14,14 @@ const w = dict.work;
 const spans = ['wide', 'narrow', 'narrow', 'wide', 'wide', 'narrow'];
 
 // Display width caps per capture source (scripts/capture-work.mjs shoots
-// at 1600px native, so 800 shows at 2x density — retina-crisp). Abdulilah
-// still uses the old low-res source (its media CDN needs allowlisting to
-// recapture) and stays capped at its 251px native to avoid upscale blur.
+// at 1600px native, so 800 shows at 2x density — retina-crisp).
 const SHOT_W: Record<string, number> = {
   najdhands: 800,
   sipha: 800,
   fourcolors: 800,
   anjal: 800,
   alreaiah: 800,
-  abdulilah: 251,
+  abdulilah: 800,
 };
 const shotStyle = (path: string | null) => {
   if (!path) return undefined;
