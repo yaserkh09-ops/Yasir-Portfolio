@@ -174,6 +174,25 @@ const initMark = () => {
     );
 };
 
+/* ---------- statement: glass chips parallax against the message ---------- */
+const initStatement = () => {
+  const section = document.querySelector<HTMLElement>('[data-statement]');
+  // chips only float (absolute) on wide screens — parallax matches that
+  if (!section || !window.matchMedia('(min-width: 1024px)').matches) return;
+  gsap.utils.toArray<HTMLElement>('[data-chip]', section).forEach((chip) => {
+    const speed = parseFloat(chip.dataset.speed ?? '0.3');
+    gsap.fromTo(
+      chip,
+      { y: 110 * speed },
+      {
+        y: -110 * speed,
+        ease: 'none',
+        scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 0.4 },
+      },
+    );
+  });
+};
+
 /* ---------- magnetic CTA (<=6px, pointer:fine only) ---------- */
 const initMagnetic = () => {
   if (!pointerFine.matches) return;
@@ -196,6 +215,7 @@ const initMagnetic = () => {
 export const initMotion = () => {
   initLenis();
   initHero();
+  initStatement();
   initWork();
   initSystem();
   initCounters();
@@ -214,7 +234,7 @@ export const teardownMotion = () => {
   });
   // restore anything mid-tween to its resting state
   gsap.set(
-    '[data-h1-line], .h1-line-inner, .nav-mark, [data-card-media], [data-card-media-inner], [data-mark], [data-mark-underscore]',
+    '[data-h1-line], .h1-line-inner, .nav-mark, [data-chip], [data-card-media], [data-card-media-inner], [data-mark], [data-mark-underscore]',
     { clearProps: 'all' },
   );
   document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {

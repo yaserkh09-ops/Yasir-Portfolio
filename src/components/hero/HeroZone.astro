@@ -1,0 +1,62 @@
+---
+import type { Locale } from '../../i18n';
+import HeroFallback from './HeroFallback.astro';
+import Hero from './Hero.astro';
+import Statement from '../sections/Statement.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<!-- One particle field behind two sections: the hero and the statement.
+     The field dissolves partway through the statement so the page settles
+     back onto plain paper/surface before the work grid. -->
+<div class="hero-zone">
+  <div class="hero-field" data-hero-field aria-hidden="true">
+    <HeroFallback />
+    <!-- OGL canvas mounts here, imported after first paint (scripts/hero.ts) -->
+  </div>
+  <Hero locale={locale} />
+  <Statement locale={locale} />
+</div>
+
+<style>
+  .hero-zone {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-field {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-canvas);
+    /* alpha mask dissolving the particle TEXTURE with depth — not a color
+       gradient (brand §4 bans gradient fills, not transparency of a field).
+       Solid through the hero (~46% of the zone), gone before the zone ends. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 90%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 90%);
+  }
+
+  /* canvas fades in once the GL field is warm; fallback stays underneath */
+  .hero-field :global(canvas) {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    opacity: 0;
+    transition: opacity 600ms var(--ease);
+  }
+  .hero-field :global(canvas.is-on) {
+    opacity: 1;
+  }
+
+  /* once the live field is warm, retire the static layer so dots
+     don't render doubled underneath the canvas */
+  :global([data-hero-field]:has(canvas.is-on) .hero-fallback) {
+    opacity: 0;
+    transition: opacity 600ms var(--ease);
+  }
+</style>

@@ -25,7 +25,6 @@ export const en: Dict = {
   hero: {
     eyebrow: 'Independent web design & development partner',
     h1Lines: ['In constant motion', 'towards impactful', 'digital presence.'],
-    sub: 'As your partner, you will find me in every step of your journey to have a strong digital presence, from a strong design system to the dream website.',
     cta: 'Get in Touch',
     ctaNote: 'Great partnerships start with a conversation',
     terminalAria: 'Live build metrics',
@@ -39,13 +38,17 @@ export const en: Dict = {
     notMeasured: 'not yet measured',
     metricsNote: 'Let’s get 8 billion people to see you!',
   },
-  ticker: [
-    'Two languages, each written natively',
-    'The right platform, per client',
-    'Brand systems for consistency',
-    'Fast, accessible, and reliable',
-    'The digital world is waiting for you',
-  ],
+  statement: {
+    message:
+      'As your partner, you will find me in every step of your journey to have a strong digital presence, from a strong design system to the dream website.',
+    chips: [
+      'Two languages, each written natively',
+      'The right platform, per client',
+      'Brand systems for consistency',
+      'Fast, accessible, and reliable',
+      'The digital world is waiting for you',
+    ],
+  },
   work: {
     heading: 'Selected work.',
     line: 'Outcomes over deliverables — each case gets tailored solutions.',
