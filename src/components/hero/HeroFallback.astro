@@ -1,37 +1,33 @@
 ---
 /**
- * Static render of the hero field: the brand grid as a dot matrix with a
- * few signal-green points. Always painted first underneath the canvas
- * (zero CLS) and remains the hero for reduced-motion, WebGL failure, and
- * deviceMemory < 4. (The flowing band now lives in the footer field.)
+ * Static render of the field: the brand grid as a dot matrix with a few
+ * signal-green points. Always painted first underneath the canvas (zero
+ * CLS) and remains the field for reduced-motion, WebGL failure, and
+ * deviceMemory < 4. Tiles at a fixed 16px cell regardless of container
+ * height — the field now spans the hero AND the statement section.
  */
-// 8 signal points spread across the field (mirrors the live constellation)
 const greens = [
-  [180, 140],
-  [1090, 170],
-  [90, 420],
-  [740, 380],
-  [1230, 540],
-  [330, 620],
-  [1390, 780],
-  [880, 850],
+  ['12%', '22%'],
+  ['27%', '15%'],
+  ['42%', '26%'],
+  ['57%', '18%'],
+  ['71%', '24%'],
+  ['86%', '16%'],
+  ['22%', '48%'],
+  ['64%', '55%'],
+  ['38%', '68%'],
+  ['79%', '62%'],
 ];
 ---
 
-<svg
-  class="hero-fallback"
-  viewBox="0 0 1440 900"
-  preserveAspectRatio="xMidYMid slice"
-  aria-hidden="true"
-  focusable="false"
->
+<svg class="hero-fallback" aria-hidden="true" focusable="false">
   <defs>
     <pattern id="hg" width="16" height="16" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1.3" fill="var(--gl-point)" opacity="0.4"></circle>
+      <circle cx="2" cy="2" r="1.1" fill="var(--gl-point)" opacity="0.22"></circle>
     </pattern>
   </defs>
-  <rect width="1440" height="900" fill="url(#hg)"></rect>
-  {greens.map(([x, y]) => <circle cx={x} cy={y} r="6" fill="var(--gl-accent)" />)}
+  <rect width="100%" height="100%" fill="url(#hg)"></rect>
+  {greens.map(([x, y]) => <circle cx={x} cy={y} r="2" fill="var(--gl-accent)" />)}
 </svg>
 
 <style>
@@ -40,14 +36,5 @@ const greens = [
     inset: 0;
     inline-size: 100%;
     block-size: 100%;
-  }
-
-  /* small screens: the field recedes so hero text keeps its contrast
-     (mirrors the live canvas's uDamp; 0.45 compensates the raised
-     desktop opacity so mobile looks unchanged) */
-  @media (max-width: 767px) {
-    .hero-fallback {
-      opacity: 0.45;
-    }
   }
 </style>

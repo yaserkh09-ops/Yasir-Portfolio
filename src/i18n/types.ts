@@ -52,7 +52,6 @@ export interface Dict {
     eyebrow: string;
     /** One entry per revealed line. */
     h1Lines: string[];
-    sub: string;
     cta: string;
     ctaNote: string;
     terminalAria: string;
@@ -63,7 +62,12 @@ export interface Dict {
     notMeasured: string;
     metricsNote: string;
   };
-  ticker: string[];
+  /** Hero-extension section: the field flows behind one centered message
+   *  with glass tag chips floating in parallax around it. */
+  statement: {
+    message: string;
+    chips: string[];
+  };
   work: {
     heading: string;
     line: string;

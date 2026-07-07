@@ -1,0 +1,110 @@
+---
+import { dicts, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const s = dicts[locale].statement;
+
+/**
+ * Parallax factor per chip, read by scripts/motion.ts (sign = direction).
+ * Desktop only — below 1024px the chips sit in a static wrapped row.
+ */
+const speeds = [0.5, -0.35, 0.3, -0.5, 0.4];
+---
+
+<!-- Hero extension: the field flows in from above (see HeroZone.astro) and
+     dissolves through this section. One centered message — the partner
+     promise — with the five claims floating around it as glass chips. -->
+<section class="statement" data-statement>
+  <div class="statement-inner container">
+    <p class="statement-msg">{s.message}</p>
+  </div>
+  <ul class="statement-chips" role="list">
+    {
+      s.chips.map((chip, i) => (
+        <li class="statement-chip glass ui-label" data-chip data-speed={speeds[i % speeds.length]}>
+          {chip}
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .statement {
+    position: relative;
+    z-index: var(--z-content);
+    min-block-size: 112svh;
+    display: grid;
+    align-content: center;
+    padding-block: 14svh;
+  }
+
+  .statement-msg {
+    margin-inline: auto;
+    max-inline-size: 26ch;
+    text-align: center;
+    font-size: clamp(1.625rem, 1.1rem + 2.2vw, 2.625rem);
+    line-height: 1.45;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  /* AR display: Bold, and the taller line-height Arabic needs (§3.3) */
+  :global(:root[lang='ar']) .statement-msg {
+    font-weight: 700;
+    line-height: 1.65;
+  }
+
+  /* mobile / narrow: a calm wrapped row under the message */
+  .statement-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-block-start: 48px;
+    padding-inline: var(--gutter);
+  }
+
+  /* nav-styled glass chip — text on glass is always full ink/paper */
+  .statement-chip {
+    color: var(--c-text);
+    padding: 12px 20px;
+    border-radius: var(--radius-panel);
+    text-align: center;
+  }
+
+  /* wide screens: chips float around the message and parallax against it */
+  @media (min-width: 1024px) {
+    .statement-chips {
+      margin: 0;
+      padding: 0;
+    }
+    .statement-chip {
+      position: absolute;
+      white-space: nowrap;
+    }
+    .statement-chip:nth-child(1) {
+      inset-block-start: 8%;
+      inset-inline-start: 7%;
+    }
+    .statement-chip:nth-child(2) {
+      inset-block-start: 17%;
+      inset-inline-end: 6%;
+    }
+    .statement-chip:nth-child(3) {
+      inset-block-start: 46%;
+      inset-inline-start: 4%;
+    }
+    .statement-chip:nth-child(4) {
+      inset-block-end: 25%;
+      inset-inline-end: 8%;
+    }
+    .statement-chip:nth-child(5) {
+      inset-block-end: 8%;
+      inset-inline-start: 15%;
+    }
+  }
+</style>
