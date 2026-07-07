@@ -177,15 +177,17 @@ const initMark = () => {
 /* ---------- statement: glass chips parallax against the message ---------- */
 const initStatement = () => {
   const section = document.querySelector<HTMLElement>('[data-statement]');
-  // chips only float (absolute) on wide screens — parallax matches that
-  if (!section || !window.matchMedia('(min-width: 1024px)').matches) return;
+  if (!section) return;
+  // full travel where chips float free (>=1024px); gentler where they sit
+  // in the wrapped row so drifting chips can't collide with each other
+  const travel = window.matchMedia('(min-width: 1024px)').matches ? 110 : 34;
   gsap.utils.toArray<HTMLElement>('[data-chip]', section).forEach((chip) => {
     const speed = parseFloat(chip.dataset.speed ?? '0.3');
     gsap.fromTo(
       chip,
-      { y: 110 * speed },
+      { y: travel * speed },
       {
-        y: -110 * speed,
+        y: -travel * speed,
         ease: 'none',
         scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 0.4 },
       },
