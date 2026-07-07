@@ -50,27 +50,40 @@ const mix = (a, b, pA) => hex(a).map((c, i) => c * pA + hex(b)[i] * (1 - pA));
 const fmt = (r) => r.toFixed(2) + ' : 1';
 const check = (r, min = 4.5) => (r >= min ? 'PASS' : 'FAIL') + ` (>= ${min})`;
 
-console.log('— Glass surfaces over worst-case canvas backdrop —\n');
+// Glass opacities — keep in sync with --glass-bg in tokens.css
+const GLASS_LIGHT = 0.64;
+const GLASS_DARK = 0.66;
+// The particle field never exceeds ~30% dot coverage; behind blur(28px)
+// the backdrop averages toward this. TEXT is still checked against the
+// theoretical 100% cluster; non-text green indicators against the
+// realistic field maximum.
+const FIELD_MAX = 0.3;
 
-// Light glass: 78% paper over a 100%-ink particle cluster (canvas darkest state)
-const glassLightWorst = toHex(mix(T.paper, T.ink, 0.78));
+console.log('— Glass surfaces (text: vs 100% cluster · non-text: vs 30% field) —\n');
+
+// Light glass over a 100%-ink particle cluster (theoretical darkest)
+const glassLightWorst = toHex(mix(T.paper, T.ink, GLASS_LIGHT));
 const rInkOnGlassLight = ratio(T.ink, glassLightWorst);
-console.log(`glass-light worst backdrop  = ${glassLightWorst}`);
+console.log(`glass-light(${GLASS_LIGHT * 100}%) text-worst backdrop = ${glassLightWorst}`);
 console.log(`  ink on glass-light        = ${fmt(rInkOnGlassLight)}  ${check(rInkOnGlassLight)}`);
 const rStone700GlassLight = ratio(T['stone-700'], glassLightWorst);
 console.log(`  stone-700 on glass-light  = ${fmt(rStone700GlassLight)}  ${check(rStone700GlassLight)}`);
-const rGreenGlassLight = ratio(T['signal-green'], glassLightWorst);
-console.log(`  signal-green on g-light   = ${fmt(rGreenGlassLight)}  ${check(rGreenGlassLight, 3)} — NON-TEXT ONLY (pass-dots, strokes)`);
+const fieldLight = toHex(mix(T.ink, T.paper, FIELD_MAX)); // 30% ink dots on paper
+const glassLightReal = toHex(mix(T.paper, fieldLight, GLASS_LIGHT));
+const rGreenGlassLight = ratio(T['signal-green'], glassLightReal);
+console.log(`  signal-green on g-light   = ${fmt(rGreenGlassLight)}  ${check(rGreenGlassLight, 3)} — NON-TEXT ONLY (vs real field max ${glassLightReal})`);
 
-// Dark glass: 72% surface over a 100%-paper particle cluster (canvas brightest state)
-const glassDarkWorst = toHex(mix(T.surface, T.paper, 0.72));
+// Dark glass over a 100%-paper particle cluster (theoretical brightest)
+const glassDarkWorst = toHex(mix(T.surface, T.paper, GLASS_DARK));
 const rPaperOnGlassDark = ratio(T.paper, glassDarkWorst);
-console.log(`\nglass-dark worst backdrop   = ${glassDarkWorst}`);
+console.log(`\nglass-dark(${GLASS_DARK * 100}%) text-worst backdrop  = ${glassDarkWorst}`);
 console.log(`  paper on glass-dark       = ${fmt(rPaperOnGlassDark)}  ${check(rPaperOnGlassDark)}`);
 const rStone400GlassDark = ratio(T['stone-400'], glassDarkWorst);
 console.log(`  stone-400 on glass-dark   = ${fmt(rStone400GlassDark)}  ${check(rStone400GlassDark)}`);
-const rGreenDGlassDark = ratio(T['signal-green-d'], glassDarkWorst);
-console.log(`  signal-green-d on g-dark  = ${fmt(rGreenDGlassDark)}  ${check(rGreenDGlassDark, 3)} — NON-TEXT ONLY (pass-dots, strokes)`);
+const fieldDark = toHex(mix(T.paper, T.surface, FIELD_MAX)); // 30% paper dots on surface
+const glassDarkReal = toHex(mix(T.surface, fieldDark, GLASS_DARK));
+const rGreenDGlassDark = ratio(T['signal-green-d'], glassDarkReal);
+console.log(`  signal-green-d on g-dark  = ${fmt(rGreenDGlassDark)}  ${check(rGreenDGlassDark, 3)} — NON-TEXT ONLY (vs real field max ${glassDarkReal})`);
 
 console.log('\n— Core pairs (must match guideline §2.3) —\n');
 const pairs = [

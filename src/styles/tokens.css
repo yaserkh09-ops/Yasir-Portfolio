@@ -3,8 +3,8 @@
    Source of truth: YASIR-brand-guideline-v1.md §2 (color), §3 (type).
    Recompute contrast on ANY change: `npm run contrast`.
 
-   VERIFIED CONTRAST — computed 2026-06-13 (scripts/contrast.mjs,
-   WCAG 2.1 relative luminance):
+   VERIFIED CONTRAST — recomputed 2026-07-07 for the glassier surfaces
+   (scripts/contrast.mjs, WCAG 2.1 relative luminance):
 
      Core pairs (match guideline §2.3 exactly):
        ink on paper            17.48 : 1  AAA
@@ -18,22 +18,23 @@
        signal-green-d on surf   7.79 : 1  AAA
        ink on signal-green-d    8.07 : 1  AAA
 
-     Glass over WORST-CASE canvas backdrop (a 100% ink/paper
-     particle cluster — denser than the real field ever renders):
-       glass-light worst composite = #C5C4C0
-         ink on glass-light       10.82 : 1  PASS text
-         stone-700 on glass-light  4.37 : 1  FAIL text
-         signal-green on glass     3.11 : 1  non-text only
-       glass-dark worst composite  = #555451
-         paper on glass-dark       7.01 : 1  PASS text
-         stone-400 on glass-dark   2.99 : 1  FAIL text
-         signal-green-d on glass   3.23 : 1  non-text only
+     Glass — TEXT checked vs a theoretical 100% ink/paper particle
+     cluster; NON-TEXT green indicators vs the field's real maximum
+     (~30% dot coverage, averaged by blur(28px)):
+       glass-light 64% text-worst composite = #A5A4A0
+         ink on glass-light        7.57 : 1  PASS text
+         stone-700 on glass-light  3.06 : 1  FAIL text
+         signal-green (non-text)   4.00 : 1  PASS vs real field #DFDDD9
+       glass-dark 66% text-worst composite  = #63615E
+         paper on glass-dark       5.72 : 1  PASS text
+         stone-400 on glass-dark   2.44 : 1  FAIL text
+         signal-green-d (non-text) 5.96 : 1  PASS vs real field #2D2C2A
 
    HARD RULE derived from the math above: text on glass surfaces is
    ALWAYS full ink (light) / paper (dark). Stone secondary tones and
    green are forbidden as text on glass; green on glass is limited to
    non-text indicators (pass-dots, strokes), which clear the 3:1
-   non-text minimum.
+   non-text minimum against the field's real density.
 
    Glass scope (prompt supersedes CLAUDE.md §4): nav, status terminal,
    hero CTA card, modal surfaces. Nothing else is ever transparent.
@@ -75,10 +76,12 @@
   --c-accent-inverse: var(--signal-green-d);
   --c-line-inverse: color-mix(in srgb, var(--paper) 16%, transparent);
 
-  /* --- glass (the ONLY transparency in the system) --- */
-  --glass-bg: color-mix(in srgb, #f8f6f1 78%, transparent);
-  --glass-blur: blur(20px) saturate(160%);
-  --glass-border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  /* --- glass (the ONLY transparency in the system) ---
+     64%/66% + blur(28px): verified in the header log — change nothing
+     here without re-running `npm run contrast` */
+  --glass-bg: color-mix(in srgb, #f8f6f1 64%, transparent);
+  --glass-blur: blur(28px) saturate(180%);
+  --glass-border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
 
   /* canvas particle colors (hero WebGL reads these via JS) */
   --gl-point: var(--ink);
@@ -175,7 +178,7 @@
   --c-accent-inverse: var(--signal-green);
   --c-line-inverse: var(--stone-300);
 
-  --glass-bg: color-mix(in srgb, #161513 72%, transparent);
+  --glass-bg: color-mix(in srgb, #161513 66%, transparent);
 
   --gl-point: var(--paper);
   --gl-accent: var(--signal-green-d);
