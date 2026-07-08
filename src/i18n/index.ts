@@ -26,4 +26,4 @@ export const altLocale = (l: Locale): Locale => (l === 'en' ? 'ar' : 'en');
 
 /** Contact address — TODO(yasir): swap to a domain mailbox once the
  *  production domain (open intake item) is confirmed. */
-export const CONTACT_EMAIL = 'yaserkh.09@gmail.com';
+export const CONTACT_EMAIL = 'dash.yasir@gmail.com';
