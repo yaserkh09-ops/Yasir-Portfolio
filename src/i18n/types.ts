@@ -98,6 +98,10 @@ export interface Dict {
     line: string;
     button: string;
     emailLabel: string;
+    /** Contact popup (opened by the primary CTA buttons). */
+    connectTitle: string;
+    whatsapp: string;
+    call: string;
   };
   footer: {
     rights: string;

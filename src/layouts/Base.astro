@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import Preloader from '../components/Preloader.astro';
 import ScrollProgress from '../components/ScrollProgress.astro';
 import Cursor from '../components/Cursor.astro';
+import ContactModal from '../components/ContactModal.astro';
 
 interface Props {
   locale: Locale;
@@ -77,6 +78,7 @@ const preloads =
       <slot />
     </main>
     <Footer locale={locale} />
+    <ContactModal locale={locale} />
     <Cursor />
     <script>
       import '../scripts/app';

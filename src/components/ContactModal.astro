@@ -1,0 +1,133 @@
+---
+import { dicts, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const c = dicts[locale].cta;
+const closeLabel = dicts[locale].work.modalClose;
+
+// Owner contact channels (v22).
+const WHATSAPP = 'https://wa.me/qr/U3TKKFKHHEGSH1';
+const PHONE = '+966556596559';
+---
+
+<!-- Centered contact popup — same design language as the project modals
+     (native <dialog>, glass, close button, backdrop), opened by any
+     [data-contact-open] CTA. Wired in scripts/modal.ts. -->
+<dialog class="contact-modal glass" data-contact-modal aria-labelledby="cm-title" tabindex="-1">
+  <button type="button" class="cm-close" data-modal-close aria-label={closeLabel}>
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.5" />
+    </svg>
+  </button>
+
+  <h2 class="cm-title h3" id="cm-title">{c.connectTitle}</h2>
+
+  <div class="cm-actions">
+    <a class="btn cm-btn" href={WHATSAPP} target="_blank" rel="noopener">
+      <svg class="cm-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.7-1.44 1.33-2 1.42-.51.08-1.16.11-1.87-.12-.43-.14-.98-.32-1.69-.63-2.98-1.29-4.92-4.28-5.07-4.48-.15-.2-1.21-1.61-1.21-3.07s.77-2.18 1.04-2.48c.27-.3.59-.37.79-.37.2 0 .39.002.57.01.18.008.43-.07.67.51.25.6.84 2.06.91 2.21.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.36 1.46.3.15.47.12.65-.07.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.3.15.5.22.57.35.07.13.07.72-.18 1.42Z"
+        />
+      </svg>
+      {c.whatsapp}
+    </a>
+    <a class="btn btn-ghost cm-btn" href={`tel:${PHONE}`}>
+      <svg class="cm-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M6.62 10.79a15.53 15.53 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2Z"
+        />
+      </svg>
+      {c.call}
+    </a>
+  </div>
+</dialog>
+
+<style>
+  .contact-modal {
+    /* text on glass is always full ink/paper — tokens.css contrast log */
+    color: var(--c-text);
+    inline-size: min(92vw, 420px);
+    max-inline-size: min(92vw, 420px);
+    margin: auto; /* centered in the top layer */
+    padding: clamp(28px, 5vw, 44px);
+    border: var(--glass-border);
+    border-radius: var(--radius-panel);
+    text-align: center;
+  }
+  .contact-modal:focus,
+  .contact-modal:focus-visible {
+    outline: none; /* the dialog holds focus on open; no ring on the box */
+  }
+
+  .contact-modal[open] {
+    display: grid;
+    gap: clamp(24px, 4vh, 32px);
+    justify-items: center;
+    animation: cm-in 400ms var(--ease);
+  }
+  @keyframes cm-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+  }
+  .contact-modal::backdrop {
+    background: color-mix(in srgb, #161513 55%, transparent);
+    animation: cm-fade 400ms var(--ease);
+  }
+  @keyframes cm-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .cm-close {
+    position: absolute;
+    inset-block-start: 8px;
+    inset-inline-end: 8px;
+    display: grid;
+    place-items: center;
+    inline-size: var(--target-min);
+    block-size: var(--target-min);
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    border-radius: var(--radius);
+  }
+
+  .cm-title {
+    margin-block-start: 6px;
+    font-weight: 600;
+  }
+
+  .cm-actions {
+    display: grid;
+    gap: 12px;
+    inline-size: 100%;
+  }
+
+  .cm-btn {
+    inline-size: 100%;
+  }
+
+  .cm-icon {
+    flex-shrink: 0;
+  }
+
+  /* quiet outline sibling of .btn — matches the project-modal ghost button */
+  .btn-ghost {
+    background: transparent;
+    color: var(--c-text);
+    border: var(--hairline) solid color-mix(in srgb, currentColor 30%, transparent);
+  }
+  .btn-ghost::after {
+    background: var(--c-accent);
+  }
+</style>

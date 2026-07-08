@@ -47,4 +47,28 @@ export const initModals = () => {
       anchor.focus({ preventScroll: true });
     });
   });
+
+  // ---- contact popup: any [data-contact-open] CTA opens the centered
+  //      dialog; the WhatsApp/Call links inside are plain anchors ----
+  const contact = document.querySelector<HTMLDialogElement>('[data-contact-modal]');
+  if (contact && typeof contact.showModal === 'function') {
+    let opener: HTMLElement | null = null;
+    document.querySelectorAll<HTMLElement>('[data-contact-open]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault(); // suppress the no-JS fallback (#contact / mailto)
+        opener = btn;
+        contact.showModal();
+        contact.focus();
+        document.documentElement.dataset.modalOpen = '1';
+      });
+    });
+    contact.addEventListener('click', (e) => {
+      if (e.target === contact) contact.close(); // backdrop click
+    });
+    contact.querySelector('[data-modal-close]')?.addEventListener('click', () => contact.close());
+    contact.addEventListener('close', () => {
+      delete document.documentElement.dataset.modalOpen;
+      opener?.focus({ preventScroll: true });
+    });
+  }
 };
