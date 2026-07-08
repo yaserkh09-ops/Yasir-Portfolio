@@ -54,8 +54,15 @@ const PHONE = '+966556596559';
     color: var(--c-text);
     inline-size: min(92vw, 420px);
     max-inline-size: min(92vw, 420px);
+    /* pin height to content: Safari's native <dialog> keeps height:auto
+       with the inset:0 centering, so without this it stretches to fill the
+       viewport and the grid balloons the buttons. fit-content forces the
+       compact card in every engine. */
+    block-size: fit-content;
+    max-block-size: min(90svh, 560px);
+    overflow: auto;
     margin: auto; /* centered in the top layer */
-    padding: clamp(28px, 5vw, 44px);
+    padding: clamp(28px, 5vw, 40px);
     border: var(--glass-border);
     border-radius: var(--radius-panel);
     text-align: center;
@@ -67,8 +74,9 @@ const PHONE = '+966556596559';
 
   .contact-modal[open] {
     display: grid;
-    gap: clamp(24px, 4vh, 32px);
+    gap: 24px;
     justify-items: center;
+    align-content: start; /* never stretch rows to fill — keeps buttons 44px */
     animation: cm-in 400ms var(--ease);
   }
   @keyframes cm-in {
