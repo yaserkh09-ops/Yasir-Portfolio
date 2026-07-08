@@ -30,8 +30,11 @@
   .cursor-dot,
   .cursor-ring {
     position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 0;
+    /* PHYSICAL top/left — the script positions these with physical pointer
+       coordinates (clientX/clientY), so logical props would anchor them to
+       the right edge in RTL and fling them off-screen on /ar/ */
+    top: 0;
+    left: 0;
     opacity: 0; /* revealed on first pointermove */
   }
 

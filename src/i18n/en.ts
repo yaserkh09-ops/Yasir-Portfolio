@@ -250,6 +250,9 @@ export const en: Dict = {
     line: 'One reply, usually within a day — in English or Arabic, whichever you prefer.',
     button: 'Get in Touch',
     emailLabel: 'Or write directly:',
+    connectTitle: 'Let’s connect',
+    whatsapp: 'WhatsApp',
+    call: 'Call me',
   },
   footer: {
     rights: '© 2026 — All work shown with permission.',
