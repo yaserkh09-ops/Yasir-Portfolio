@@ -178,9 +178,9 @@ const initMark = () => {
 const initStatement = () => {
   const section = document.querySelector<HTMLElement>('[data-statement]');
   if (!section) return;
-  // full travel where chips float free (>=1024px); gentler where they sit
-  // in the wrapped row so drifting chips can't collide with each other
-  const travel = window.matchMedia('(min-width: 1024px)').matches ? 110 : 34;
+  // chips float free on every viewport now — near-desktop travel on
+  // mobile too, slightly reduced so top chips can't drift under the nav
+  const travel = window.matchMedia('(min-width: 1024px)').matches ? 110 : 80;
   gsap.utils.toArray<HTMLElement>('[data-chip]', section).forEach((chip) => {
     const speed = parseFloat(chip.dataset.speed ?? '0.3');
     gsap.fromTo(
