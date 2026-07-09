@@ -37,10 +37,18 @@ const speeds = [0.5, -0.35, 0.3, -0.5, 0.4];
   .statement {
     position: relative;
     z-index: var(--z-content);
-    min-block-size: 112svh;
+    /* compact on small screens — the old 112svh left dead space above
+       the message and below the chips */
+    min-block-size: 88svh;
     display: grid;
     align-content: center;
-    padding-block: 14svh;
+    padding-block: 6svh;
+  }
+  @media (min-width: 1024px) {
+    .statement {
+      min-block-size: 112svh;
+      padding-block: 14svh;
+    }
   }
 
   .statement-msg {
@@ -61,36 +69,54 @@ const speeds = [0.5, -0.35, 0.3, -0.5, 0.4];
     text-align: center;
   }
 
-  /* mobile / narrow: a calm wrapped row under the message */
   .statement-chips {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    margin-block-start: 48px;
-    padding-inline: var(--gutter);
+    margin: 0;
+    padding: 0;
   }
 
-  /* nav-styled glass chip — text on glass is always full ink/paper */
+  /* nav-styled glass chip, floating on EVERY viewport — text on glass
+     is always full ink/paper */
   .statement-chip {
+    position: absolute;
+    white-space: nowrap;
     color: var(--c-text);
     padding: 12px 20px;
     border-radius: var(--radius-panel);
     text-align: center;
   }
 
-  /* wide screens: chips float around the message and parallax against it */
-  @media (min-width: 1024px) {
-    .statement-chips {
-      margin: 0;
-      padding: 0;
-    }
+  /* small screens: same floating composition, arranged vertically —
+     two chips above the message, three below (fills the field instead
+     of leaving it empty) */
+  @media (max-width: 1023px) {
     .statement-chip {
-      position: absolute;
-      white-space: nowrap;
+      padding: 10px 16px;
     }
-    /* orbit close to the message: top/bottom chips pull well inward;
-       the two mid-height chips stay outside the message's column */
+    .statement-chip:nth-child(1) {
+      inset-block-start: 6%;
+      inset-inline-start: 6%;
+    }
+    .statement-chip:nth-child(2) {
+      inset-block-start: 16%;
+      inset-inline-end: 5%;
+    }
+    .statement-chip:nth-child(3) {
+      inset-block-end: 19%;
+      inset-inline-start: 7%;
+    }
+    .statement-chip:nth-child(4) {
+      inset-block-end: 10%;
+      inset-inline-end: 5%;
+    }
+    .statement-chip:nth-child(5) {
+      inset-block-end: 1.5%;
+      inset-inline-start: 16%;
+    }
+  }
+
+  /* wide screens: orbit close to the message: top/bottom chips pull well
+     inward; the two mid-height chips stay outside the message's column */
+  @media (min-width: 1024px) {
     .statement-chip:nth-child(1) {
       inset-block-start: 16%;
       inset-inline-start: 19%;
